@@ -71,7 +71,32 @@ public:
 		int x = iceMan->getX();
 		int y = iceMan->getY();
 
+		int ch;
+		if (getKey(ch) == true) {  // user hit a key this tick! 
 
+			switch (ch)
+			{
+			case KEY_PRESS_LEFT:  // move player to the left ...;
+				iceMan->moveTo(x - 1, y);
+				iceMan->setDirection(GraphObject::left);
+				break;
+			case KEY_PRESS_RIGHT:  // move player to the right ...;
+				iceMan->moveTo(x + 1, y);
+				iceMan->setDirection(GraphObject::right);
+				break;
+			case KEY_PRESS_DOWN:
+				iceMan->moveTo(x, y - 1);
+				iceMan->setDirection(GraphObject::down);
+				break;
+			case KEY_PRESS_UP:
+				iceMan->moveTo(x, y + 1);
+				iceMan->setDirection(GraphObject::up);
+				break;
+			case KEY_PRESS_SPACE:  // add a Squirt in front of the player...;
+				break;  // etc...  } 
+			}
+		}
+		
 
 
 		//if (iceSheet[x + 5][y] != nullptr) { //TODO: Fix - Throws access violation exception.
@@ -83,7 +108,12 @@ public:
 
 		//iceMan->moveTo(x + 1, y); //Iceman movement.
 
-
+		int px = protester->getX();
+		int py = protester->getY();
+		if (protester->getX() <= 0) {
+			protester->moveTo(px + 1, y);
+		}
+		protester->moveTo(px - 1, y); // protester movement
 
 		//decLives();
 		return GWSTATUS_CONTINUE_GAME;
@@ -100,7 +130,7 @@ private:
 
 	Actor* iceMan{}; //TODO: Fix memory leak
 	Actor* protester{};
-	Actor* HProtester{};
+	Protester* HProtester{};
 	Item* tempOil{};
 	Item* tempGold{};//For testing purposes only.
 	Item* tempBoulder{};

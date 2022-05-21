@@ -55,6 +55,10 @@ Iceman::~Iceman() { }
 Protester::Protester(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
 	Actor(imageID, startX, startY, dir, size, depth) { }
 
+void Protester::doSomething() {
+	
+}
+
 Protester::~Protester(){}
 
 //----------------------------------------------------------------------------------------------------------------------PROTESTER END
