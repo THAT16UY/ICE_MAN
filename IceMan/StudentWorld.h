@@ -23,9 +23,15 @@ public:
 		iceMan = new Iceman(); //potential memory leak.
 		iceMan->setVisible(true);
 
+		protester = new Protester(IID_PROTESTER, 60, 60, GraphObject::left, 0.1, 0);
+		protester->setVisible(true);
+
+		HProtester = new HardcoreProtester();
+		HProtester->setVisible(true);
+
 		tempGold = new Gold(10,60); //temp displays gold
 		tempGold->setVisible(true);
-
+		
 		tempOil = new Oil(40,60); //temp displays Oil
 		tempOil->setVisible(true);
 
@@ -93,6 +99,8 @@ public:
 private:
 
 	Actor* iceMan{}; //TODO: Fix memory leak
+	Actor* protester{};
+	Protester* HProtester{};
 	Item* tempOil{};
 	Item* tempGold{};//For testing purposes only.
 	Item* tempBoulder{};

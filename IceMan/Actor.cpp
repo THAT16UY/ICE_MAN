@@ -50,6 +50,22 @@ void Iceman::doSomething() {
 
 Iceman::~Iceman() { }
 
+//-----------------------------------------------------------------------------------------------------------------------PROTESTER START
+
+Protester::Protester(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
+	Actor(IID_PROTESTER, 60, 60, left, 1.0, 0) { }
+
+Protester::~Protester(){}
+
+//----------------------------------------------------------------------------------------------------------------------PROTESTER END
+
+//----------------------------------------------------------------------------------------------------------------------H PROTESTER START
+HardcoreProtester::HardcoreProtester() :
+	Protester(IID_HARD_CORE_PROTESTER, 50, 60, left, 1.0, 0){ }
+
+HardcoreProtester::~HardcoreProtester(){}
+//----------------------------------------------------------------------------------------------------------------------H PROTESTER END
+
 //-----------------------------------------------------------------------------------------------------------------------ITEM START
 Item::Item(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
 	GraphObject(imageID, startX, startY, dir, size, depth) {}
