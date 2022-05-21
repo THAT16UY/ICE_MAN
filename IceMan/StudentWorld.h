@@ -110,10 +110,7 @@ public:
 
 		int px = protester->getX();
 		int py = protester->getY();
-		if (protester->getX() <= 0) {
-			protester->moveTo(px + 1, y);
-		}
-		protester->moveTo(px - 1, y); // protester movement
+		protester->moveTo(px - 1, py); // protester movement
 
 		//decLives();
 		return GWSTATUS_CONTINUE_GAME;
