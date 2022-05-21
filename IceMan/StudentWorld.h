@@ -23,7 +23,7 @@ public:
 		iceMan = new Iceman(); //potential memory leak.
 		iceMan->setVisible(true);
 
-		protester = new Protester(IID_PROTESTER, 60, 60, GraphObject::left, 0.1, 0);
+		protester = new Protester(IID_PROTESTER, 60, 60, GraphObject::left, 1.0, 0);
 		protester->setVisible(true);
 
 		HProtester = new HardcoreProtester();
@@ -100,7 +100,7 @@ private:
 
 	Actor* iceMan{}; //TODO: Fix memory leak
 	Actor* protester{};
-	Protester* HProtester{};
+	Actor* HProtester{};
 	Item* tempOil{};
 	Item* tempGold{};//For testing purposes only.
 	Item* tempBoulder{};
