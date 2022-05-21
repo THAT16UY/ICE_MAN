@@ -111,6 +111,7 @@ public:
 		int px = protester->getX();
 		int py = protester->getY();
 		protester->moveTo(px - 1, py); // protester movement
+		
 
 		//decLives();
 		return GWSTATUS_CONTINUE_GAME;
