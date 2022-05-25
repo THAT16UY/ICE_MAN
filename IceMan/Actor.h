@@ -2,7 +2,7 @@
 #define ACTOR_H_
 
 #include "GraphObject.h"
-class StudentWorld;
+class StudentWorld; // This is an incomplete type. Also known as a forward declaration.
 
 // Students:  Add code to this file, Actor.cpp, StudentWorld.h, and StudentWorld.cpp
 
@@ -33,6 +33,10 @@ public:
 	void decreaseSonar();
 	void decreaseGold();
 	void decreaseHit();
+	int getHit();
+	int getWater();
+	int getSonar();
+	int getGold();
 
 	void doSomething();
 

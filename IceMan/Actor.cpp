@@ -32,6 +32,22 @@ void Iceman::decreaseHit() { //TODO: Have this method return continue or end gam
 	hit_points--;
 }
 
+int Iceman::getHit() {
+	return hit_points;
+}
+
+int Iceman::getWater() {
+	return water_units;
+}
+
+int Iceman::getSonar() {
+	return sonar;
+}
+
+int Iceman::getGold() {
+	return gold;
+}
+
 void Iceman::doSomething() {
 
 	//int ch;
