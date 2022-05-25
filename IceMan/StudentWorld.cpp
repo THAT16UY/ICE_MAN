@@ -25,3 +25,14 @@ void StudentWorld::DestroyIce(int x, int y) {
 	}
 	return;
 }
+
+void StudentWorld::pickItem(int x, int y, std::vector<Item*> &it) {
+	
+	for (int i{ 0 }; i < it.size(); i++) {
+		int itemX = it.at(i)->getX();
+		int itemY = it.at(i)->getY();
+		if (itemX >= x && itemX <= x + 4 && itemY >= y && itemY <= y + 4) {
+			it.at(i)->setVisible(false);
+		}
+	}
+}

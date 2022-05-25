@@ -4,6 +4,7 @@
 #include "GameWorld.h"
 #include "GameConstants.h"
 #include "Actor.h"
+#include "Algorithm"
 #include <string>
 #include <vector>
 
@@ -29,23 +30,32 @@ public:
 		HProtester = new HardcoreProtester();
 		HProtester->setVisible(true);
 
-		tempGold = new Gold(10,60); //temp displays gold
-		tempGold->setVisible(true);
+		//FOR TESTING: we will put items in a vector then run a loop to set them visible.
+		itemV.push_back(new Gold(10, 60));
+		itemV.push_back(new Oil(40, 60));
+		itemV.push_back(new Sonar(50, 60));
+		itemV.push_back(new Pool(15, 60));
+
+		std::for_each(itemV.begin(), itemV.end(), [](Item* tempItem) { tempItem->setVisible(true); });
 		
-		tempOil = new Oil(40,60); //temp displays Oil
-		tempOil->setVisible(true);
+
+		//tempGold = new Gold(10,60); //temp displays gold
+		//tempGold->setVisible(true);
+		
+		//tempOil = new Oil(40,60); //temp displays Oil
+		//tempOil->setVisible(true);
 
 		tempBoulder = new Boulder(20,40);// temp display boulder
 		tempBoulder->setVisible(true);
 
-		tempPool = new Pool(15,60);
-		tempPool->setVisible(true);
+		/*tempPool = new Pool(15,60);
+		tempPool->setVisible(true);*/
 
 		tempGun = new Gun(5,60);
 		tempGun->setVisible(true);
 
-		tempSonar = new Sonar(50,60);
-		tempSonar->setVisible(true);
+		/*tempSonar = new Sonar(50,60);
+		tempSonar->setVisible(true);*/
 
 
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) { // 60 * 60 = 3600 ice objects.......... // 1 = 4 squares  .25 =  square
@@ -65,6 +75,8 @@ public:
 
 	bool IsIceThere(int x, int y);
 	void DestroyIce(int x, int y);
+	void pickItem(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
+
 	virtual int move()
 	{
 		// This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
@@ -72,6 +84,8 @@ public:
 
 		int x = iceMan->getX();
 		int y = iceMan->getY();
+
+		pickItem(x, y, itemV);
 
 		int ch;
 		if (getKey(ch) == true) {  // user hit a key this tick! 
@@ -115,6 +129,7 @@ public:
 				}
 				break;
 			case KEY_PRESS_SPACE:  // add a Squirt in front of the player...;
+
 				break;  // etc...  } 
 			}
 		}
@@ -160,6 +175,7 @@ private:
 	Item* tempSonar{};
 
 	Ice* iceSheet[65][65]{ nullptr }; //TODO: Fix memory leak - will delete in the cleanUp() function.
+	std::vector<Item*> itemV;
 };
 
 #endif // STUDENTWORLD_H_
