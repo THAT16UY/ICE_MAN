@@ -56,13 +56,15 @@ public:
 			}
 		}
 
-
+		
 
 		setGameStatText("Lives: " + std::to_string(getLives()) + " Level: " + std::to_string(getLevel()));
 
 		return GWSTATUS_CONTINUE_GAME;
 	}
 
+	bool IsIceThere(int x, int y);
+	void DestroyIce(int x, int y);
 	virtual int move()
 	{
 		// This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
@@ -79,18 +81,38 @@ public:
 			case KEY_PRESS_LEFT:  // move player to the left ...;
 				iceMan->moveTo(x - 1, y);
 				iceMan->setDirection(GraphObject::left);
+				for(int i = x; i<x+4; i++){
+					for (int j = y; j < y + 4; j++) {
+						DestroyIce(i, j);
+					}
+				}
 				break;
 			case KEY_PRESS_RIGHT:  // move player to the right ...;
 				iceMan->moveTo(x + 1, y);
 				iceMan->setDirection(GraphObject::right);
+				for (int i = x; i < x + 4; i++) {
+					for (int j = y; j < y + 4; j++) {
+						DestroyIce(i, j);
+					}
+				}
 				break;
 			case KEY_PRESS_DOWN:
 				iceMan->moveTo(x, y - 1);
 				iceMan->setDirection(GraphObject::down);
+				for (int i = x; i < x + 4; i++) {
+					for (int j = y; j < y + 4; j++) {
+						DestroyIce(i, j);
+					}
+				}
 				break;
 			case KEY_PRESS_UP:
 				iceMan->moveTo(x, y + 1);
 				iceMan->setDirection(GraphObject::up);
+				for(int i = x; i<x+4; i++){
+					for (int j = y; j < y + 4; j++) {
+						DestroyIce(i, j);
+					}
+				}
 				break;
 			case KEY_PRESS_SPACE:  // add a Squirt in front of the player...;
 				break;  // etc...  } 
@@ -137,7 +159,7 @@ private:
 	Item* tempPool{};
 	Item* tempSonar{};
 
-	Ice* iceSheet[65][65]; //TODO: Fix memory leak - will delete in the cleanUp() function.
+	Ice* iceSheet[65][65]{ nullptr }; //TODO: Fix memory leak - will delete in the cleanUp() function.
 };
 
 #endif // STUDENTWORLD_H_
