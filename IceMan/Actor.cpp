@@ -3,12 +3,12 @@
 
 // Students:  Add code to this file (if you wish), Actor.h, StudentWorld.h, and StudentWorld.cpp
 
-Actor::Actor(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
-	GraphObject(imageID, startX, startY, dir, size, depth) { }
+Actor::Actor(int imageID, int startX, int startY, StudentWorld* world, Direction dir, double size, unsigned int depth) :
+	GraphObject(imageID, startX, startY, dir, size, depth) {}
 Actor::~Actor() { }
 
 //Iceman will take no arguments as it will always appear in the same location, with all the same arguments.
-Iceman::Iceman() : Actor(IID_PLAYER, 30, 60, right, 1.0, 0) { }
+Iceman::Iceman() : Actor(IID_PLAYER, 30, 60, nullptr, right, 1.0, 0) { }
 
 void Iceman::increaseWater() {
 	water_units++;
@@ -53,7 +53,7 @@ Iceman::~Iceman() { }
 //-----------------------------------------------------------------------------------------------------------------------PROTESTER START
 
 Protester::Protester(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
-	Actor(imageID, startX, startY, dir, size, depth) { }
+	Actor(imageID, startX, startY, nullptr, dir, size, depth) { }
 
 void Protester::doSomething() {
 	
