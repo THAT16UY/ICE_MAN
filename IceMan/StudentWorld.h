@@ -36,7 +36,7 @@ public:
 		itemV.push_back(new Sonar(50, 60));
 		itemV.push_back(new Pool(15, 60));
 
-		std::for_each(itemV.begin(), itemV.end(), [](Item* tempItem) { tempItem->setVisible(true); });
+		std::for_each(itemV.begin(), itemV.end(), [](Item* &tempItem) { tempItem->setVisible(true); });
 
 		tempBoulder = new Boulder(20,40);// temp display boulder
 		tempBoulder->setVisible(true);
@@ -46,7 +46,7 @@ public:
 
 
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) { // 60 * 60 = 3600 ice objects.......... // 1 = 4 squares  .25 =  square
-			if (xAxis == 31 || xAxis == 32 || xAxis == 33) { continue; }
+			if (xAxis == 30 || xAxis == 31 || xAxis == 32 || xAxis == 33) { continue; }
 			for (int yAxis{ 0 }; yAxis < 60; yAxis++) {
 				iceSheet[xAxis][yAxis] = new Ice(xAxis, yAxis);
 				iceSheet[xAxis][yAxis]->setVisible(true);
@@ -80,7 +80,10 @@ public:
 			switch (ch)
 			{
 			case KEY_PRESS_LEFT:  // move player to the left ...;
-				iceMan->moveTo(x - 1, y);
+				if (x > 0) {
+					iceMan->moveTo(x - 1, y);
+				}
+
 				iceMan->setDirection(GraphObject::left);
 				for(int i = x; i<x+4; i++){
 					for (int j = y; j < y + 4; j++) {
@@ -89,7 +92,10 @@ public:
 				}
 				break;
 			case KEY_PRESS_RIGHT:  // move player to the right ...;
-				iceMan->moveTo(x + 1, y);
+				if (x < 60) {
+					iceMan->moveTo(x + 1, y);
+				}
+	
 				iceMan->setDirection(GraphObject::right);
 				for (int i = x; i < x + 4; i++) {
 					for (int j = y; j < y + 4; j++) {
@@ -98,7 +104,10 @@ public:
 				}
 				break;
 			case KEY_PRESS_DOWN:
-				iceMan->moveTo(x, y - 1);
+				if (y > 0) {
+					iceMan->moveTo(x, y - 1);
+				}
+	
 				iceMan->setDirection(GraphObject::down);
 				for (int i = x; i < x + 4; i++) {
 					for (int j = y; j < y + 4; j++) {
@@ -107,7 +116,10 @@ public:
 				}
 				break;
 			case KEY_PRESS_UP:
-				iceMan->moveTo(x, y + 1);
+				if (y < 60) {
+					iceMan->moveTo(x, y + 1);
+				}
+				
 				iceMan->setDirection(GraphObject::up);
 				for(int i = x; i<x+4; i++){
 					for (int j = y; j < y + 4; j++) {
@@ -124,7 +136,7 @@ public:
 
 		int px = protester->getX();
 		int py = protester->getY();
-		protester->moveTo(px - 1, py); // protester movement
+		//protester->moveTo(px - 1, py); // protester movement
 	
 
 		//decLives();
