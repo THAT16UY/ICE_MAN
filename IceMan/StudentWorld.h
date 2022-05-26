@@ -37,25 +37,12 @@ public:
 		itemV.push_back(new Pool(15, 60));
 
 		std::for_each(itemV.begin(), itemV.end(), [](Item* tempItem) { tempItem->setVisible(true); });
-		
-
-		//tempGold = new Gold(10,60); //temp displays gold
-		//tempGold->setVisible(true);
-		
-		//tempOil = new Oil(40,60); //temp displays Oil
-		//tempOil->setVisible(true);
 
 		tempBoulder = new Boulder(20,40);// temp display boulder
 		tempBoulder->setVisible(true);
 
-		/*tempPool = new Pool(15,60);
-		tempPool->setVisible(true);*/
-
 		tempGun = new Gun(5,60);
 		tempGun->setVisible(true);
-
-		/*tempSonar = new Sonar(50,60);
-		tempSonar->setVisible(true);*/
 
 
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) { // 60 * 60 = 3600 ice objects.......... // 1 = 4 squares  .25 =  square
@@ -135,20 +122,10 @@ public:
 		}
 		
 
-
-		//if (iceSheet[x + 5][y] != nullptr) { //TODO: Fix - Throws access violation exception.
-		//	iceSheet[x + 4][y]->setVisible(false);
-		//	iceSheet[x + 4][y + 1]->setVisible(false);
-		//	iceSheet[x + 4][y + 2]->setVisible(false);
-		//	iceSheet[x + 4][y + 3]->setVisible(false);
-		//}
-
-		//iceMan->moveTo(x + 1, y); //Iceman movement.
-
 		int px = protester->getX();
 		int py = protester->getY();
 		protester->moveTo(px - 1, py); // protester movement
-		
+	
 
 		//decLives();
 		return GWSTATUS_CONTINUE_GAME;
@@ -157,24 +134,36 @@ public:
 	virtual void cleanUp()
 	{
 		delete iceMan;
-		delete tempGold;
-		delete tempOil;
+		delete protester;
+		delete HProtester;
+		delete tempBoulder;
+		delete tempGun;
+		
+		for (Item* ite : itemV) {
+			delete ite; //Deleting all items in vector.
+		}
+
+
+		for (int i = 0; i < 64; i++) {//Deleting iceSheet.
+			if (i == 31 || i == 32 || i == 33) { continue; }
+			for (int j = 0; j < 64; j++) {
+				delete iceSheet[i][j];
+			}
+		}
+
 	}
 
 private:
 
-	Actor* iceMan{}; //TODO: Fix memory leak
+	Actor* iceMan{};
 	Actor* protester{};
 	Protester* HProtester{};
-	Item* tempOil{};
-	Item* tempGold{};//For testing purposes only.
 	Item* tempBoulder{};
-
 	Item* tempGun{};
-	Item* tempPool{};
-	Item* tempSonar{};
+	
+	
 
-	Ice* iceSheet[65][65]{ nullptr }; //TODO: Fix memory leak - will delete in the cleanUp() function.
+	Ice* iceSheet[65][65]{ nullptr };
 	std::vector<Item*> itemV;
 };
 
