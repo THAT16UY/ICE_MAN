@@ -31,7 +31,7 @@ void StudentWorld::pickItem(int x, int y, std::vector<Item*> &it) {
 	for (int i{ 0 }; i < it.size(); i++) {
 		int itemX = it.at(i)->getX();
 		int itemY = it.at(i)->getY();
-		if (itemX >= x && itemX <= x + 4 && itemY >= y && itemY <= y + 4) {
+		if (itemX >= x - 2 && itemX <= x + 3 && itemY >= y - 2 && itemY <= y + 3) {
 			if (it.at(i)->isVisible()) {
 				playSound(SOUND_GOT_GOODIE);
 				it.at(i)->setVisible(false);
