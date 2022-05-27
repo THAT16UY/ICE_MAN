@@ -41,8 +41,7 @@ public:
 		tempBoulder = new Boulder(20,40);// temp display boulder
 		tempBoulder->setVisible(true);
 
-		tempGun = new Gun(5,60);
-		tempGun->setVisible(true);
+		
 
 
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) { // 60 * 60 = 3600 ice objects.......... // 1 = 4 squares  .25 =  square
@@ -71,6 +70,7 @@ public:
 
 		int x = iceMan->getX();
 		int y = iceMan->getY();
+		
 
 		pickItem(x, y, itemV);
 
@@ -121,16 +121,44 @@ public:
 				}
 				
 				iceMan->setDirection(GraphObject::up);
-				for(int i = x; i<x+4; i++){
+				for(int i = x; i< x + 4; i++){
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
 					}
 				}
 				break;
-			case KEY_PRESS_SPACE:  // add a Squirt in front of the player...;
-
+			case KEY_PRESS_SPACE:
+				//TODO: Find solution to making the splash invisible after it has moved, and add coalition detection with protester.
+				
+				GraphObject::Direction tempDirection = iceMan->getDirection();
+				tempGuns.push_back(new Gun(x, y));
+				
+				switch (tempDirection)
+				{
+				case GraphObject::right:
+					tempGuns.at(tempGuns.size() - 1)->setDirection(GraphObject::right);
+					tempGuns.at(tempGuns.size() - 1)->setVisible(true);
+					tempGuns.at(tempGuns.size() - 1)->moveTo(x + 5, y);
+					break;
+				case GraphObject::left:
+					tempGuns.at(tempGuns.size() - 1)->setDirection(GraphObject::left);
+					tempGuns.at(tempGuns.size() - 1)->setVisible(true);
+					tempGuns.at(tempGuns.size() - 1)->moveTo(x - 5, y);
+					break;
+				case GraphObject::up:
+					tempGuns.at(tempGuns.size() - 1)->setDirection(GraphObject::up);
+					tempGuns.at(tempGuns.size() - 1)->setVisible(true);
+					tempGuns.at(tempGuns.size() - 1)->moveTo(x, y + 5);
+					break;
+				case GraphObject::down:
+					tempGuns.at(tempGuns.size() - 1)->setDirection(GraphObject::down);
+					tempGuns.at(tempGuns.size() - 1)->setVisible(true);
+					tempGuns.at(tempGuns.size() - 1)->moveTo(x, y - 5);
+					break;
+				}
 				break;  // etc...  } 
 			}
+			
 		}
 		
 
@@ -140,6 +168,7 @@ public:
 	
 
 		//decLives();
+		
 		return GWSTATUS_CONTINUE_GAME;
 	}
 
@@ -149,10 +178,14 @@ public:
 		delete protester;
 		delete HProtester;
 		delete tempBoulder;
-		delete tempGun;
+		
 		
 		for (Item* ite : itemV) {
 			delete ite; //Deleting all items in vector.
+		}
+
+		for (Item* ite : tempGuns) {
+			delete ite;
 		}
 
 
@@ -171,12 +204,13 @@ private:
 	Actor* protester{};
 	Protester* HProtester{};
 	Item* tempBoulder{};
-	Item* tempGun{};
+	
 	
 	
 
 	Ice* iceSheet[65][65]{ nullptr };
 	std::vector<Item*> itemV;
+	std::vector<Item*> tempGuns; //No sure if this is the best approach, make sure to review code after.
 };
 
 #endif // STUDENTWORLD_H_
