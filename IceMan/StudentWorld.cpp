@@ -1,5 +1,7 @@
 #include "StudentWorld.h"
 #include <string>
+#include <time.h>
+#include <stdlib.h>
 using namespace std;
 
 GameWorld* createStudentWorld(string assetDir)
@@ -8,6 +10,11 @@ GameWorld* createStudentWorld(string assetDir)
 }
 
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
+
+int StudentWorld::ItemPlacement(int i)
+{
+	return 0;
+}
 
 bool StudentWorld::IsIceThere(int x, int y) {
 	if (iceSheet[x][y] != nullptr) {
@@ -38,4 +45,17 @@ void StudentWorld::pickItem(int x, int y, std::vector<Item*> &it) {
 			}
 		}
 	}
+}
+/*
+int randomP(int i) {
+	srand(time(0));
+	i = rand() % 65;
+	return i;
+}
+*/
+
+int ItemPlacement(int number) {
+	srand(time(0));
+	number = rand() % 65;
+	return number;
 }

@@ -37,8 +37,8 @@ public:
 		itemV.push_back(new Pool(15, 60));
 
 		std::for_each(itemV.begin(), itemV.end(), [](Item* &tempItem) { tempItem->setVisible(true); });
-
-		tempBoulder = new Boulder(20,40);// temp display boulder
+		int c = 0, g = 0;
+		tempBoulder = new Boulder(ItemPlacement(c),ItemPlacement(g));// temp display boulder
 		tempBoulder->setVisible(true);
 
 		tempGun = new Gun(5,60);
@@ -59,7 +59,7 @@ public:
 
 		return GWSTATUS_CONTINUE_GAME;
 	}
-
+	int ItemPlacement(int i);
 	bool IsIceThere(int x, int y);
 	void DestroyIce(int x, int y);
 	void pickItem(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
