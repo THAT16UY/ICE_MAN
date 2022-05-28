@@ -25,15 +25,15 @@ public:
 	{
 		srand(time(NULL)); //Random number generator. 
 		int current_level = getLevel();
-		current_level = 10;
-		boulder_number = std::min(current_level / 2 + 2, 9);
+		current_level = 6;
+		boulder_number = std::min(int(current_level / 2 + 2), 9);
 		int BoulderX{}, BoulderY{};
 		int boulder_count{ 0 };
 		bool boulderOk = false, create{};
 
 		while (!boulderOk) {
 			BoulderX = rand() % 60;
-			BoulderY = rand() % 55;
+			BoulderY = rand() % 30 + 25;
 			create = true;
 
 			if (BoulderX >= 30 && BoulderX <= 33) { 
@@ -48,8 +48,7 @@ public:
 			}
 			else {
 				for (unsigned int i{ 0 }; i < itemV.size(); i++) {
-					if (std::sqrt(std::exp2(itemV.at(i)->getX() - BoulderX) + std::exp2(itemV.at(i)->getY() - BoulderY)) < 6) {
-						std::cout << std::sqrt(std::exp2(itemV.at(i)->getX() - BoulderX) + std::exp2(itemV.at(i)->getY() - BoulderY)) << std::endl;
+					if (std::sqrt(std::exp2(itemV.at(i)->getX() - BoulderX) + std::exp2(itemV.at(i)->getY() - BoulderY)) < 6) {	
 						create = false;
 						break;
 					}
@@ -59,13 +58,15 @@ public:
 			if (!create) {
 				continue;
 			}
-
-			itemV.push_back(new Boulder(BoulderX, BoulderY));
-			boulder_count++;
+			else {
+				itemV.push_back(new Boulder(BoulderX, BoulderY));
+				boulder_count++;
+			}
 
 			if (boulder_count == boulder_number) {
 				boulderOk = true;
 			}
+			
 		}
 		
 
