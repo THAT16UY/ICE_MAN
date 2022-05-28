@@ -26,7 +26,6 @@ public:
 		srand(time(NULL)); //Random number generator. 
 		int current_level = getLevel();
 		boulder_number = std::min(int(current_level / 2 + 3), 10);
-		boulder_number = 10;
 		int BoulderX{}, BoulderY{};
 		int boulder_count{ 0 };
 		bool boulderOk = false, create{};
