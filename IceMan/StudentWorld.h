@@ -22,6 +22,7 @@ public:
 	}
 
 	void setUpItem(int num, const int id);
+
 	virtual int init()
 	{
 		
@@ -34,6 +35,8 @@ public:
 		setUpItem(oil_barrels_number, IID_BARREL);
 		setUpItem(gold_nugget_number, IID_GOLD);
 
+		std::for_each(itemV.begin(), itemV.end(), [](Item*& tempItem) { tempItem->setVisible(true); }); //Sets all items to visible.
+
 		iceMan = new Iceman(); //potential memory leak.
 		iceMan->setVisible(true);
 
@@ -43,12 +46,7 @@ public:
 		HProtester = new HardcoreProtester();
 		HProtester->setVisible(true);
 
-		//FOR TESTING: we will put items in a vector then run a loop to set them visible.
-	/*	itemV.push_back(new Gold(10, 60));
-		itemV.push_back(new Oil(40, 60));
-		itemV.push_back(new Sonar(50, 60));
-		itemV.push_back(new Pool(15, 60));*/
-		std::for_each(itemV.begin(), itemV.end(), [](Item* &tempItem) { tempItem->setVisible(true); });	
+		
 
 
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) { // 60 * 60 = 3600 ice objects.......... // 1 = 4 squares  .25 =  square
