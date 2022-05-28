@@ -21,53 +21,18 @@ public:
 		
 	}
 
+	void setUpItem(int num, const int id);
 	virtual int init()
 	{
-		srand(time(NULL)); //Random number generator. 
+		
 		int current_level = getLevel();
 		boulder_number = std::min(int(current_level / 2 + 3), 10);
-		int BoulderX{}, BoulderY{};
-		int boulder_count{ 0 };
-		bool boulderOk = false, create{};
-
-		while (!boulderOk) {
-			BoulderX = rand() % 60;
-			BoulderY = rand() % 45 + 10;
-			create = true;
-
-			if (BoulderX >= 30 && BoulderX <= 33) { 
-				BoulderX += 4; }
-			else if (BoulderX >= 27 && BoulderX <=29) {
-				BoulderX -= 4;
-			}
-
-			if(itemV.empty()){
-				itemV.push_back(new Boulder(BoulderX, BoulderY));// temp display boulder
-				boulder_count++;
-			}
-			else {
-				for (unsigned int i{ 0 }; i < itemV.size(); i++) {
-					//if statement uses distance formula to make sure we don't overlap our boulders.
-					if (std::sqrt(pow(itemV.at(i)->getX() - BoulderX, 2) + pow(itemV.at(i)->getY() - BoulderY, 2)) < 6) {
-						create = false;
-						break;
-					}
-				}
-			}
-
-			if (!create) {
-				continue;
-			}
-			else {
-				itemV.push_back(new Boulder(BoulderX, BoulderY));
-				boulder_count++;
-			}
-
-			if (boulder_count == boulder_number) {
-				boulderOk = true;
-			}
-			
-		}
+		gold_nugget_number = std::max(5 - current_level / 2, 2);//TODO: integrate into loop.
+		oil_barrels_number = std::min(2 + current_level, 21);//Formula => min(2 + current_level_number, 21)
+	
+		setUpItem(boulder_number, IID_BOULDER);
+		setUpItem(oil_barrels_number, IID_BARREL);
+		setUpItem(gold_nugget_number, IID_GOLD);
 
 		iceMan = new Iceman(); //potential memory leak.
 		iceMan->setVisible(true);
@@ -79,10 +44,10 @@ public:
 		HProtester->setVisible(true);
 
 		//FOR TESTING: we will put items in a vector then run a loop to set them visible.
-		itemV.push_back(new Gold(10, 60));
+	/*	itemV.push_back(new Gold(10, 60));
 		itemV.push_back(new Oil(40, 60));
 		itemV.push_back(new Sonar(50, 60));
-		itemV.push_back(new Pool(15, 60));
+		itemV.push_back(new Pool(15, 60));*/
 		std::for_each(itemV.begin(), itemV.end(), [](Item* &tempItem) { tempItem->setVisible(true); });	
 
 
@@ -243,6 +208,8 @@ public:
 private:
 
 	int boulder_number{};//Formula => min(current_level_number / 2 + 2, 9) 
+	int gold_nugget_number{};//Formular => max(5 - current_level_number / 2, 2)
+	int oil_barrels_number{};//Formula => min(2 + current_level_number, 21)
 
 
 	Actor* iceMan{};
