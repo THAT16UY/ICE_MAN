@@ -25,15 +25,14 @@ public:
 	{
 		srand(time(NULL)); //Random number generator. 
 		int current_level = getLevel();
-		boulder_number = std::min(int(current_level / 2 + 3), 10); //Boulder is 6 / 2 + 2 = 5
-		std::cout << "Boulder num:" << boulder_number << std::endl;
+		boulder_number = std::min(int(current_level / 2 + 3), 10);
+		boulder_number = 10;
 		int BoulderX{}, BoulderY{};
 		int boulder_count{ 0 };
 		bool boulderOk = false, create{};
 
 		while (!boulderOk) {
 			BoulderX = rand() % 60;
-			std::cout << "x:" << BoulderX << " y:" << BoulderY << std::endl;
 			BoulderY = rand() % 45 + 10;
 			create = true;
 
@@ -45,12 +44,12 @@ public:
 
 			if(itemV.empty()){
 				itemV.push_back(new Boulder(BoulderX, BoulderY));// temp display boulder
-				std::cout << "Boulder pushed" << std::endl;
 				boulder_count++;
 			}
 			else {
 				for (unsigned int i{ 0 }; i < itemV.size(); i++) {
-					if (std::sqrt(std::exp2(itemV.at(i)->getX() - BoulderX) + std::exp2(itemV.at(i)->getY() - BoulderY)) < 6) {	
+					//if statement uses distance formula to make sure we don't overlap our boulders.
+					if (std::sqrt(pow(itemV.at(i)->getX() - BoulderX, 2) + pow(itemV.at(i)->getY() - BoulderY, 2)) < 6) {
 						create = false;
 						break;
 					}
@@ -58,12 +57,10 @@ public:
 			}
 
 			if (!create) {
-				std::cout << "We had a distance smaller than 6" << std::endl;
 				continue;
 			}
 			else {
 				itemV.push_back(new Boulder(BoulderX, BoulderY));
-				std::cout << "Boulder pushed" << std::endl;
 				boulder_count++;
 			}
 
@@ -72,8 +69,6 @@ public:
 			}
 			
 		}
-		
-		std::cout << "Final Boulder count: " << boulder_count << std::endl;
 
 		iceMan = new Iceman(); //potential memory leak.
 		iceMan->setVisible(true);
