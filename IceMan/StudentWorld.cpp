@@ -35,7 +35,7 @@ void StudentWorld::DestroyIce(int x, int y) {
 
 void StudentWorld::pickItem(int x, int y, std::vector<Item*> &it) {
 	
-	for (int i{ 0 }; i < it.size(); i++) {
+	for (unsigned int i{ 0 }; i < it.size(); i++) {
 		int itemX = it.at(i)->getX();
 		int itemY = it.at(i)->getY();
 		if (itemX >= x - 2 && itemX <= x + 3 && itemY >= y - 2 && itemY <= y + 3) {
@@ -46,6 +46,7 @@ void StudentWorld::pickItem(int x, int y, std::vector<Item*> &it) {
 		}
 	}
 }
+
 /*
 int randomP(int i) {
 	srand(time(0));
@@ -54,8 +55,8 @@ int randomP(int i) {
 }
 */
 
-int ItemPlacement(int number) {
-	srand(time(0));
-	number = rand() % 65;
-	return number;
-}
+//int ItemPlacement(int number) {
+//	srand(time(0));
+//	number = rand() % 65;
+//	return number;
+//}

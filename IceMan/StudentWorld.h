@@ -7,6 +7,8 @@
 #include "Algorithm"
 #include <string>
 #include <vector>
+#include <ctime>
+#include <cmath>
 
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
 
@@ -16,11 +18,57 @@ public:
 	StudentWorld(std::string assetDir)
 		: GameWorld(assetDir)
 	{
-
+		
 	}
 
 	virtual int init()
 	{
+		srand(time(NULL)); //Random number generator. 
+		int current_level = getLevel();
+		current_level = 10;
+		boulder_number = std::min(current_level / 2 + 2, 9);
+		int BoulderX{}, BoulderY{};
+		int boulder_count{ 0 };
+		bool boulderOk = false, create{};
+
+		while (!boulderOk) {
+			BoulderX = rand() % 60;
+			BoulderY = rand() % 55;
+			create = true;
+
+			if (BoulderX >= 30 && BoulderX <= 33) { 
+				BoulderX += 4; }
+			else if (BoulderX >= 27 && BoulderX <=29) {
+				BoulderX -= 4;
+			}
+
+			if(itemV.empty()){
+				itemV.push_back(new Boulder(BoulderX, BoulderY));// temp display boulder
+				boulder_count++;
+			}
+			else {
+				for (unsigned int i{ 0 }; i < itemV.size(); i++) {
+					if (std::sqrt(std::exp2(itemV.at(i)->getX() - BoulderX) + std::exp2(itemV.at(i)->getY() - BoulderY)) < 6) {
+						std::cout << std::sqrt(std::exp2(itemV.at(i)->getX() - BoulderX) + std::exp2(itemV.at(i)->getY() - BoulderY)) << std::endl;
+						create = false;
+						break;
+					}
+				}
+			}
+
+			if (!create) {
+				continue;
+			}
+
+			itemV.push_back(new Boulder(BoulderX, BoulderY));
+			boulder_count++;
+
+			if (boulder_count == boulder_number) {
+				boulderOk = true;
+			}
+		}
+		
+
 		iceMan = new Iceman(); //potential memory leak.
 		iceMan->setVisible(true);
 
@@ -35,13 +83,7 @@ public:
 		itemV.push_back(new Oil(40, 60));
 		itemV.push_back(new Sonar(50, 60));
 		itemV.push_back(new Pool(15, 60));
-
-		std::for_each(itemV.begin(), itemV.end(), [](Item* &tempItem) { tempItem->setVisible(true); });
-		int c = 0, g = 0;
-		tempBoulder = new Boulder(ItemPlacement(c),ItemPlacement(g));// temp display boulder
-		tempBoulder->setVisible(true);
-
-		
+		std::for_each(itemV.begin(), itemV.end(), [](Item* &tempItem) { tempItem->setVisible(true); });	
 
 
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) { // 60 * 60 = 3600 ice objects.......... // 1 = 4 squares  .25 =  square
@@ -199,6 +241,9 @@ public:
 	}
 
 private:
+
+	int boulder_number{};//Formula => min(current_level_number / 2 + 2, 9) 
+
 
 	Actor* iceMan{};
 	Actor* protester{};
