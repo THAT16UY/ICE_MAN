@@ -25,15 +25,16 @@ public:
 	{
 		srand(time(NULL)); //Random number generator. 
 		int current_level = getLevel();
-		current_level = 6;
-		boulder_number = std::min(int(current_level / 2 + 2), 9);
+		boulder_number = std::min(int(current_level / 2 + 3), 10); //Boulder is 6 / 2 + 2 = 5
+		std::cout << "Boulder num:" << boulder_number << std::endl;
 		int BoulderX{}, BoulderY{};
 		int boulder_count{ 0 };
 		bool boulderOk = false, create{};
 
 		while (!boulderOk) {
 			BoulderX = rand() % 60;
-			BoulderY = rand() % 30 + 25;
+			std::cout << "x:" << BoulderX << " y:" << BoulderY << std::endl;
+			BoulderY = rand() % 45 + 10;
 			create = true;
 
 			if (BoulderX >= 30 && BoulderX <= 33) { 
@@ -44,6 +45,7 @@ public:
 
 			if(itemV.empty()){
 				itemV.push_back(new Boulder(BoulderX, BoulderY));// temp display boulder
+				std::cout << "Boulder pushed" << std::endl;
 				boulder_count++;
 			}
 			else {
@@ -56,10 +58,12 @@ public:
 			}
 
 			if (!create) {
+				std::cout << "We had a distance smaller than 6" << std::endl;
 				continue;
 			}
 			else {
 				itemV.push_back(new Boulder(BoulderX, BoulderY));
+				std::cout << "Boulder pushed" << std::endl;
 				boulder_count++;
 			}
 
@@ -69,6 +73,7 @@ public:
 			
 		}
 		
+		std::cout << "Final Boulder count: " << boulder_count << std::endl;
 
 		iceMan = new Iceman(); //potential memory leak.
 		iceMan->setVisible(true);
