@@ -31,23 +31,20 @@ public:
 		gold_nugget_number = std::max(5 - current_level / 2, 2);//TODO: integrate into loop.
 		oil_barrels_number = std::min(2 + current_level, 21);//Formula => min(2 + current_level_number, 21)
 	
-		setUpItem(boulder_number, IID_BOULDER);
-		setUpItem(oil_barrels_number, IID_BARREL);
-		setUpItem(gold_nugget_number, IID_GOLD);
+		setUpItem(boulder_number, IID_BOULDER); //Bouders are visible
+		setUpItem(oil_barrels_number, IID_BARREL); //Oil is not visible
+		setUpItem(gold_nugget_number, IID_GOLD); //Gold is not visible.
 
-		std::for_each(itemV.begin(), itemV.end(), [](Item*& tempItem) { tempItem->setVisible(true); }); //Sets all items to visible.
+		//std::for_each(itemV.begin(), itemV.end(), [](Item*& tempItem) { tempItem->setVisible(true); }); //Sets all items to visible.
 
 		iceMan = new Iceman(); //potential memory leak.
 		iceMan->setVisible(true);
 
 		protester = new Protester(IID_PROTESTER, 60, 60, GraphObject::left, 1.0, 0);
-		protester->setVisible(true);
+		//protester->setVisible(true);
 
 		HProtester = new HardcoreProtester();
-		HProtester->setVisible(true);
-
-		
-
+		//HProtester->setVisible(true);
 
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) { // 60 * 60 = 3600 ice objects.......... // 1 = 4 squares  .25 =  square
 			if (xAxis == 30 || xAxis == 31 || xAxis == 32 || xAxis == 33) { continue; }
@@ -59,14 +56,15 @@ public:
 
 		
 
-		setGameStatText("Lives: " + std::to_string(getLives()) + " Level: " + std::to_string(getLevel()));
+		setGameStatText("Lives: " + std::to_string(getLives()) + " Level: " + std::to_string(getLevel()) + " Oil:" + std::to_string(oil_barrels_number) + " Gold:" + std::to_string(iceMan->getGold()));
 
 		return GWSTATUS_CONTINUE_GAME;
 	}
+
 	int ItemPlacement(int i);
 	bool IsIceThere(int x, int y);
 	void DestroyIce(int x, int y);
-	void pickItem(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
+	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
 
 	virtual int move()
 	{
@@ -77,7 +75,11 @@ public:
 		int y = iceMan->getY();
 		
 
-		pickItem(x, y, itemV);
+		itemInteraction(x, y, itemV);
+
+		if (oil_found == oil_barrels_number) {
+			return GWSTATUS_PLAYER_DIED;
+		}
 
 		int ch;
 		if (getKey(ch) == true) {  // user hit a key this tick! 
@@ -170,6 +172,7 @@ public:
 		int px = protester->getX();
 		int py = protester->getY();
 		//protester->moveTo(px - 1, py); // protester movement
+		setGameStatText("Lives: " + std::to_string(getLives()) + " Level: " + std::to_string(getLevel()) + " Oil Left:" + std::to_string(oil_barrels_number - oil_found) + " Gold:" + std::to_string(iceMan->getGold()));
 	
 
 		//decLives();
@@ -185,13 +188,13 @@ public:
 		delete tempBoulder;
 		
 		
-		for (Item* ite : itemV) {
-			delete ite; //Deleting all items in vector.
-		}
+		//for (Item* ite : itemV) {
+		//	delete ite; //Deleting all items in vector.
+		//}
 
-		for (Item* ite : tempGuns) {
-			delete ite;
-		}
+		//for (Item* ite : tempGuns) {
+		//	delete ite;
+		//}
 
 
 		for (int i = 0; i < 64; i++) {//Deleting iceSheet.
@@ -204,13 +207,16 @@ public:
 	}
 
 private:
+	
+	//The tree variables below will be set to a specific number every level based on the documentation specification.
+	int boulder_number{}; 
+	int gold_nugget_number{};
+	int oil_barrels_number{};
 
-	int boulder_number{};//Formula => min(current_level_number / 2 + 2, 9) 
-	int gold_nugget_number{};//Formular => max(5 - current_level_number / 2, 2)
-	int oil_barrels_number{};//Formula => min(2 + current_level_number, 21)
+	int oil_found{ 0 }; //Will keep count of how many oil barrels we have found so far.
 
 
-	Actor* iceMan{};
+	Iceman* iceMan{};
 	Actor* protester{};
 	Protester* HProtester{};
 	Item* tempBoulder{};

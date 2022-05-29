@@ -29,8 +29,11 @@ void StudentWorld::setUpItem(int num, const int id) {
 		}
 
 		if (itemV.empty()) {
+			Item* temp{};
 			if (id == IID_BOULDER) {
-				itemV.push_back(new Boulder(coordinateX, coordinateY));
+				temp = new Boulder(coordinateX, coordinateY);
+				temp->setVisible(true);
+				itemV.push_back(temp);
 			}
 			if (id == IID_GOLD) {
 				itemV.push_back(new Gold(coordinateX, coordinateY));
@@ -55,8 +58,11 @@ void StudentWorld::setUpItem(int num, const int id) {
 			continue;
 		}
 		else {
+			Item* temp{};
 			if (id == IID_BOULDER) {
-				itemV.push_back(new Boulder(coordinateX, coordinateY));
+				temp = new Boulder(coordinateX, coordinateY);
+				temp->setVisible(true);
+				itemV.push_back(temp);
 			}
 			if (id == IID_GOLD) {
 				itemV.push_back(new Gold(coordinateX, coordinateY));
@@ -96,15 +102,28 @@ void StudentWorld::DestroyIce(int x, int y) {
 	return;
 }
 
-void StudentWorld::pickItem(int x, int y, std::vector<Item*> &it) {
+void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 	
 	for (unsigned int i{ 0 }; i < it.size(); i++) {
 		int itemX = it.at(i)->getX();
 		int itemY = it.at(i)->getY();
-		if (itemX >= x - 2 && itemX <= x + 3 && itemY >= y - 2 && itemY <= y + 3) {
+		if (std::sqrt(pow(x - itemX,2) + pow(y - itemY,2)) < 5.56 && it.at(i)->isGrabbable()) {
+			it.at(i)->setVisible(true);
+		}
+		if (itemX >= x - 2 && itemX <= x + 3 && itemY >= y - 2 && itemY <= y + 3 && it.at(i)->isGrabbable()) {
 			if (it.at(i)->isVisible()) {
-				playSound(SOUND_GOT_GOODIE);
+				
+				if (it.at(i)->getID() == IID_GOLD ) {
+					playSound(SOUND_GOT_GOODIE);
+					iceMan->increaseGold();
+				}
+				if (it.at(i)->getID() == IID_BARREL) {
+					playSound(SOUND_FOUND_OIL);
+					oil_found++; 
+				}
+
 				it.at(i)->setVisible(false);
+				it.at(i)->setGrabbable(false);
 			}
 		}
 	}

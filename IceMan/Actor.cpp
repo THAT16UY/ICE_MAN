@@ -97,6 +97,13 @@ Item::~Item() {}
 Ice::Ice(int startX, int startY) : 
 	Item(IID_ICE, startX, startY, none, 0.25, 1) {}
 
+bool Ice::isGrabbable() {
+	return false;
+}
+void Ice::setGrabbable(bool val) {
+	return; //nothing needed here
+}
+
 Ice::~Ice() {}
 //-----------------------------------------------------------------------------------------------------------------------ICE END
  
@@ -104,7 +111,13 @@ Ice::~Ice() {}
 Gold::Gold(int startX, int startY) :
 	Item(IID_GOLD , startX , startY , none , 1, 0) {}
 
-//TODO : in the init() function, within the IceSheet cordinates declare gold xAxis & yAxis using random numbers.
+bool Gold::isGrabbable() {
+	return is_available;
+}
+
+void Gold::setGrabbable(bool val) {
+	is_available = val;
+}
 
 Gold::~Gold() {}
 //-----------------------------------------------------------------------------------------------------------------------GOLD END
@@ -113,6 +126,13 @@ Gold::~Gold() {}
 Oil::Oil(int startX, int startY) : Item(IID_BARREL, startX, startY, none, 1.0, 0){}
 
 //TODO : in the init() function, within the IceSheet cordinates declare oil xAxis & yAxis using random numbers.
+bool Oil::isGrabbable() {
+	return is_available;
+}
+
+void Oil::setGrabbable(bool val) {
+	is_available = val;
+}
 
 Oil::~Oil() {}
 //-----------------------------------------------------------------------------------------------------------------------OIL END
@@ -120,8 +140,14 @@ Oil::~Oil() {}
 //-----------------------------------------------------------------------------------------------------------------------BOULDER START 
 Boulder::Boulder(int startX, int startY) : Item(IID_BOULDER, startX, startY, none, 1.0, 10){}
 
-//TODO : in the init() function, within the IceSheet cordinates declare Boulder xAxis & yAxis using random numbers.
-//       also add the dropping functionality.
+
+bool Boulder::isGrabbable() {
+	return false;
+}
+
+void Boulder::setGrabbable(bool val) {
+	return;
+}
 
 Boulder::~Boulder(){}
 //-----------------------------------------------------------------------------------------------------------------------BOULDER END
@@ -129,7 +155,12 @@ Boulder::~Boulder(){}
 //-----------------------------------------------------------------------------------------------------------------------SONAR START
 Sonar::Sonar(int startX, int startY) : Item(IID_SONAR, startX, startY, none, 1.0, 0){}
 
-//TODO : in the init() function, within the IceSheet cordinates declare Sonar xAxis & yAxis using random numbers.
+bool Sonar::isGrabbable() {
+	return is_available;
+}
+void Sonar::setGrabbable(bool val) {
+	is_available = val;
+}
 
 Sonar::~Sonar(){}
 //-----------------------------------------------------------------------------------------------------------------------SONAR END
@@ -138,7 +169,12 @@ Sonar::~Sonar(){}
 Gun::Gun(int startX, int startY) : Item(IID_WATER_SPURT, startX, startY, none, 1.0, 0) {}
 
 //TODO : in the init() function, within the IceSheet cordinates declare Gun xAxis & yAxis using random numbers.
-
+bool Gun::isGrabbable() {
+	return false;
+}
+void Gun::setGrabbable(bool val) {
+	return;
+}
 Gun::~Gun() {}
 //-----------------------------------------------------------------------------------------------------------------------GUN END
 
@@ -146,6 +182,13 @@ Gun::~Gun() {}
 Pool::Pool(int startX, int startY) : Item(IID_WATER_POOL, startX, startY, none, 1.0, 0) {}
 
 //TODO : in the init() function, within the IceSheet cordinates declare Pool xAxis & yAxis using random numbers.
+bool Pool::isGrabbable() {
+	return is_available;
+}
+
+void Pool::setGrabbable(bool val) {
+	is_available = val;
+}
 
 Pool::~Pool() {}
 //-----------------------------------------------------------------------------------------------------------------------POOL END
