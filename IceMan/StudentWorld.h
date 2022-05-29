@@ -35,7 +35,6 @@ public:
 		setUpItem(oil_barrels_number, IID_BARREL); //Oil is not visible
 		setUpItem(gold_nugget_number, IID_GOLD); //Gold is not visible.
 
-		//std::for_each(itemV.begin(), itemV.end(), [](Item*& tempItem) { tempItem->setVisible(true); }); //Sets all items to visible.
 
 		iceMan = new Iceman(); //potential memory leak.
 		iceMan->setVisible(true);
@@ -56,10 +55,14 @@ public:
 
 		
 
-		setGameStatText("Lives: " + std::to_string(getLives()) + 
-			" Level: " + std::to_string(getLevel()) + 
-			" Oil:" + std::to_string(oil_barrels_number) + 
-			" Gold:" + std::to_string(iceMan->getGold()));
+		setGameStatText("Lvl: " + std::to_string(getLevel()) +
+			" Lives: " + std::to_string(getLives()) +
+			" Hlth:" + std::to_string(iceMan->getHit() * 10) +
+			" Wtr:" + std::to_string(iceMan->getWater()) +
+			" Gld:" + std::to_string(iceMan->getGold()) +
+			" Oil_Left:" + std::to_string(oil_barrels_number) +
+			" Sonar:" + std::to_string(iceMan->getSonar()) +
+			" Scr:" + std::to_string(getScore()));
 
 		return GWSTATUS_CONTINUE_GAME;
 	}
@@ -175,10 +178,14 @@ public:
 		int px = protester->getX();
 		int py = protester->getY();
 		//protester->moveTo(px - 1, py); // protester movement
-		setGameStatText("Lives: " + std::to_string(getLives()) + 
-			" Level: " + std::to_string(getLevel()) + 
-			" Oil Left:" + std::to_string(oil_barrels_number - oil_found) + 
-			" Gold:" + std::to_string(iceMan->getGold()));
+		setGameStatText("Lvl: " + std::to_string(getLevel()) +
+			" Lives: " + std::to_string(getLives()) +
+			" Hlth:" + std::to_string(iceMan->getHit() * 10) +
+			" Wtr:" + std::to_string(iceMan->getWater()) +
+			" Gld:" + std::to_string(iceMan->getGold()) +
+			" Oil_Left:" + std::to_string(oil_barrels_number - oil_found) +
+			" Sonar:" + std::to_string(iceMan->getSonar()) +
+			" Scr:" + std::to_string(getScore()));
 	
 
 		//decLives();
