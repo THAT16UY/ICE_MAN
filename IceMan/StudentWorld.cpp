@@ -1,5 +1,6 @@
 #include "StudentWorld.h"
 #include <string>
+#include <vector>
 #include <time.h>
 #include <stdlib.h>
 using namespace std;
@@ -15,6 +16,7 @@ void StudentWorld::setUpItem(int num, const int id) {
 	int coordinateX{}, coordinateY{};
 	int boulder_count{ 0 };
 	bool boulderOk = false, create{};
+
 
 	while (!boulderOk) {
 		coordinateX = rand() % 60;
@@ -80,11 +82,6 @@ void StudentWorld::setUpItem(int num, const int id) {
 	}
 }
 
-int StudentWorld::ItemPlacement(int i)
-{
-	return 0;
-}
-
 bool StudentWorld::IsIceThere(int x, int y) {
 	if (iceSheet[x][y] != nullptr) {
 		if (iceSheet[x][y]->isVisible()) {
@@ -127,6 +124,19 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 			}
 		}
 	}
+}
+
+
+string direction[4]{ "LEFT", "RIGHT", "UP", "DOWN" };
+
+bool StudentWorld::directioncheck(int x, int y) {
+	for(int i = 0; i < 4; i++){
+		if (direction[i] == "LEFT") {
+
+		}
+	}
+
+	
 }
 
 /*

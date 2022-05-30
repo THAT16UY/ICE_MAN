@@ -41,7 +41,7 @@ public:
 		iceMan->setVisible(true);
 
 		protester = new Protester(IID_PROTESTER, 60, 60, GraphObject::left, 1.0, 0);
-		//protester->setVisible(true);
+		protester->setVisible(true);
 
 		HProtester = new HardcoreProtester();
 		//HProtester->setVisible(true);
@@ -64,7 +64,7 @@ public:
 		return GWSTATUS_CONTINUE_GAME;
 	}
 
-	int ItemPlacement(int i);
+	bool directioncheck(int x, int y); // checks if the directoin of the protestor is avaible or not.
 	bool IsIceThere(int x, int y);
 	void DestroyIce(int x, int y);
 	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
@@ -174,7 +174,12 @@ public:
 
 		int px = protester->getX();
 		int py = protester->getY();
-		//protester->moveTo(px - 1, py); // protester movement
+		
+		if (px > 0) {
+			protester->moveTo(px - 1, py); // protester movement
+		}
+
+
 		setGameStatText("Lives: " + std::to_string(getLives()) + 
 			" Level: " + std::to_string(getLevel()) + 
 			" Oil Left:" + std::to_string(oil_barrels_number - oil_found) + 

@@ -44,8 +44,8 @@ public:
 };
 
 class Protester : public Actor {
-
-	//Ethan
+private:
+	
 public:
 	 Protester(int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
 
