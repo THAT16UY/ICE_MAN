@@ -143,7 +143,7 @@ public:
 			case KEY_PRESS_SPACE:
 				//TODO: Find solution to making the splash invisible after it has moved, and add coalition detection with protester.
 				
-				GraphObject::Direction tempDirection = iceMan->getDirection();
+				/*GraphObject::Direction tempDirection = iceMan->getDirection();
 				tempGuns.push_back(new Gun(x, y));
 				
 				switch (tempDirection)
@@ -168,8 +168,21 @@ public:
 					tempGuns.at(tempGuns.size() - 1)->setVisible(true);
 					tempGuns.at(tempGuns.size() - 1)->moveTo(x, y - 5);
 					break;
-				}
+				}*/
 				break;  // etc...  } 
+
+			case KEY_PRESS_ESCAPE:
+				break;
+
+			case KEY_PRESS_TAB:
+				if (iceMan->getGold() > 0) {
+					iceMan->decreaseGold();
+					Item* tempG{ new Gold(x,y) };
+					tempG->setGrabbable(false);
+					tempG->setVisible(true);
+					itemV.push_back(tempG);
+				}
+				break;
 			}
 			
 		}
