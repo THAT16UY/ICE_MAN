@@ -116,12 +116,12 @@ void StudentWorld::DestroyIce(int x, int y) {
 	return;
 }
 
-void StudentWorld::itemInteraction(int x, int y, std::vector<Item*>& it) {
-
+void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
+	
 	for (unsigned int i{ 0 }; i < it.size(); i++) {
 		int itemX = it.at(i)->getX();
 		int itemY = it.at(i)->getY();
-		if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 5.5 && it.at(i)->isGrabbable()) {
+		if (std::sqrt(pow(x - itemX,2) + pow(y - itemY,2)) < 5.5 && it.at(i)->isGrabbable()) {
 			it.at(i)->setVisible(true);
 		}
 		if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 4 && it.at(i)->isGrabbable()) {
@@ -133,7 +133,7 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*>& it) {
 				}
 				if (it.at(i)->getID() == IID_BARREL) {
 					playSound(SOUND_FOUND_OIL);
-					*oil_found += 1;
+					*oil_found += 1; 
 				}
 
 				it.at(i)->setVisible(false);
@@ -142,3 +142,4 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*>& it) {
 		}
 	}
 }
+

@@ -18,7 +18,7 @@ public:
 	StudentWorld(std::string assetDir)
 		: GameWorld(assetDir)
 	{
-
+		
 	}
 
 	void setUpItem(int num, const int id);
@@ -35,12 +35,12 @@ public:
 		}
 
 		oil_found = new int(0);//At every level we start from 0.
-
+		
 		int current_level = getLevel();
 		boulder_number = new int(std::min(int(current_level / 2 + 3), 10));
 		gold_nugget_number = new int(std::max(5 - current_level / 2, 2));
 		oil_barrels_number = new int(std::min(2 + current_level, 21));
-
+	
 		setUpItem(*boulder_number, IID_BOULDER); //Bouders are visible TODO: make ice surounding boulder invisible.
 		setUpItem(*oil_barrels_number, IID_BARREL); //Oil is not visible
 		setUpItem(*gold_nugget_number, IID_GOLD); //Gold is not visible.
@@ -69,7 +69,7 @@ public:
 	int ItemPlacement(int i);
 	bool IsIceThere(int x, int y);
 	void DestroyIce(int x, int y);
-	void itemInteraction(int x, int y, std::vector<Item*>& it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
+	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
 
 	virtual int move()
 	{
@@ -77,7 +77,7 @@ public:
 		// Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.
 		int x = iceMan->getX();
 		int y = iceMan->getY();
-
+		
 		itemInteraction(x, y, itemV); //Checking for any objects with in a 5.5(to make visible) & 4(to pick up) radius of the iceman.
 
 		if (*oil_found == *oil_barrels_number) {
@@ -95,7 +95,7 @@ public:
 				}
 
 				iceMan->setDirection(GraphObject::left);
-				for (int i = x; i < x + 4; i++) {
+				for(int i = x; i<x+4; i++){
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
 					}
@@ -105,7 +105,7 @@ public:
 				if (x < 60) {
 					iceMan->moveTo(x + 1, y);
 				}
-
+	
 				iceMan->setDirection(GraphObject::right);
 				for (int i = x; i < x + 4; i++) {
 					for (int j = y; j < y + 4; j++) {
@@ -117,7 +117,7 @@ public:
 				if (y > 0) {
 					iceMan->moveTo(x, y - 1);
 				}
-
+	
 				iceMan->setDirection(GraphObject::down);
 				for (int i = x; i < x + 4; i++) {
 					for (int j = y; j < y + 4; j++) {
@@ -129,9 +129,9 @@ public:
 				if (y < 60) {
 					iceMan->moveTo(x, y + 1);
 				}
-
+		
 				iceMan->setDirection(GraphObject::up);
-				for (int i = x; i < x + 4; i++) {
+				for(int i = x; i< x + 4; i++){
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
 					}
@@ -155,9 +155,9 @@ public:
 				}
 				break;
 			}
-
+			
 		}
-
+		
 		int px = protester->getX();
 		int py = protester->getY();
 		//protester->moveTo(px - 1, py); // protester movement
@@ -183,7 +183,7 @@ public:
 		delete gold_nugget_number;
 		delete oil_barrels_number;
 		delete oil_found;
-
+		
 		for (Item* ite : itemV) {
 			delete ite; //Deleting all items in vector.
 			ite = nullptr;
@@ -201,9 +201,9 @@ public:
 	}
 
 private:
-
+	
 	//The tree variables below will be set to a specific number every level based on the documentation specification.
-	int* boulder_number{};
+	int* boulder_number{}; 
 	int* gold_nugget_number{};
 	int* oil_barrels_number{};
 
@@ -212,7 +212,7 @@ private:
 	Iceman* iceMan{};
 	Actor* protester{};//temp, used for testing.
 	Protester* HProtester{};//temp, used for testing.
-
+	
 	Ice* iceSheet[65][65]{ nullptr };
 	std::vector<Item*> itemV;//This vector stores items: Boulders,Gold,Oil,Sonar,Pool.
 
