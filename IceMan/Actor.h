@@ -44,12 +44,12 @@ public:
 };
 
 class Protester : public Actor {
-private:
-	
-public:
-	 Protester(int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
 
-	 void doSomething();
+	//Ethan
+public:
+	Protester(int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
+
+	void doSomething();
 
 	~Protester();
 };
@@ -68,7 +68,7 @@ class Item : public GraphObject {
 public:
 	Item(int imageID, int startX, int startY, Direction dir = none, double size = 1.0, unsigned int depth = 0);
 	virtual ~Item();
-	
+
 	virtual bool isGrabbable() = 0;
 	virtual void setGrabbable(bool) = 0;
 };
@@ -99,7 +99,7 @@ class Oil : public Item {
 
 public:
 	Oil(int startX, int startY);
-	 virtual ~Oil();
+	virtual ~Oil();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
@@ -109,7 +109,7 @@ class Boulder : public Item {
 
 public:
 	Boulder(int startX, int startY);
-	 virtual ~Boulder();
+	virtual ~Boulder();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);

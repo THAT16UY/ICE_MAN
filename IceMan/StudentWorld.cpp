@@ -1,6 +1,5 @@
 #include "StudentWorld.h"
 #include <string>
-#include <vector>
 #include <time.h>
 #include <stdlib.h>
 using namespace std;
@@ -16,7 +15,6 @@ void StudentWorld::setUpItem(int num, const int id) {
 	int coordinateX{}, coordinateY{};
 	int boulder_count{ 0 };
 	bool boulderOk = false, create{};
-
 
 	while (!boulderOk) {
 		coordinateX = rand() % 60;
@@ -34,6 +32,13 @@ void StudentWorld::setUpItem(int num, const int id) {
 			Item* temp{};
 			if (id == IID_BOULDER) {
 				temp = new Boulder(coordinateX, coordinateY);
+				for (int i{ coordinateX }; i < coordinateX + 4; i++) {
+					for (int j{ coordinateY }; j < coordinateY + 4; j++) {
+						if (iceSheet[i][j] != nullptr && iceSheet[i][j]->isVisible()) {
+							iceSheet[i][j]->setVisible(false);
+						}
+					}
+				}
 				temp->setVisible(true);
 				itemV.push_back(temp);
 			}
@@ -43,7 +48,7 @@ void StudentWorld::setUpItem(int num, const int id) {
 			if (id == IID_BARREL) {
 				itemV.push_back(new Oil(coordinateX, coordinateY));
 			}
-			
+
 			boulder_count++;
 		}
 		else {
@@ -63,6 +68,13 @@ void StudentWorld::setUpItem(int num, const int id) {
 			Item* temp{};
 			if (id == IID_BOULDER) {
 				temp = new Boulder(coordinateX, coordinateY);
+				for (int i{ coordinateX }; i < coordinateX + 4; i++) {
+					for (int j{ coordinateY }; j < coordinateY + 4; j++) {
+						if (iceSheet[i][j] != nullptr && iceSheet[i][j]->isVisible()) {
+							iceSheet[i][j]->setVisible(false);
+						}
+					}
+				}
 				temp->setVisible(true);
 				itemV.push_back(temp);
 			}
@@ -82,6 +94,11 @@ void StudentWorld::setUpItem(int num, const int id) {
 	}
 }
 
+int StudentWorld::ItemPlacement(int i)
+{
+	return 0;
+}
+
 bool StudentWorld::IsIceThere(int x, int y) {
 	if (iceSheet[x][y] != nullptr) {
 		if (iceSheet[x][y]->isVisible()) {
@@ -99,24 +116,24 @@ void StudentWorld::DestroyIce(int x, int y) {
 	return;
 }
 
-void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
-	
+void StudentWorld::itemInteraction(int x, int y, std::vector<Item*>& it) {
+
 	for (unsigned int i{ 0 }; i < it.size(); i++) {
 		int itemX = it.at(i)->getX();
 		int itemY = it.at(i)->getY();
-		if (std::sqrt(pow(x - itemX,2) + pow(y - itemY,2)) < 5.56 && it.at(i)->isGrabbable()) {
+		if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 5.5 && it.at(i)->isGrabbable()) {
 			it.at(i)->setVisible(true);
 		}
-		if (itemX >= x - 2 && itemX <= x + 3 && itemY >= y - 2 && itemY <= y + 3 && it.at(i)->isGrabbable()) {
+		if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 4 && it.at(i)->isGrabbable()) {
 			if (it.at(i)->isVisible()) {
-				
-				if (it.at(i)->getID() == IID_GOLD ) {
+
+				if (it.at(i)->getID() == IID_GOLD) {
 					playSound(SOUND_GOT_GOODIE);
 					iceMan->increaseGold();
 				}
 				if (it.at(i)->getID() == IID_BARREL) {
 					playSound(SOUND_FOUND_OIL);
-					oil_found++; 
+					*oil_found += 1;
 				}
 
 				it.at(i)->setVisible(false);
@@ -125,30 +142,3 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 		}
 	}
 }
-
-
-string direction[4]{ "LEFT", "RIGHT", "UP", "DOWN" };
-
-bool StudentWorld::directioncheck(int x, int y) {
-	for(int i = 0; i < 4; i++){
-		if (direction[i] == "LEFT") {
-
-		}
-	}
-
-	
-}
-
-/*
-int randomP(int i) {
-	srand(time(0));
-	i = rand() % 65;
-	return i;
-}
-*/
-
-//int ItemPlacement(int number) {
-//	srand(time(0));
-//	number = rand() % 65;
-//	return number;
-//}
