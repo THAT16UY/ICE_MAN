@@ -107,10 +107,10 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 	for (unsigned int i{ 0 }; i < it.size(); i++) {
 		int itemX = it.at(i)->getX();
 		int itemY = it.at(i)->getY();
-		if (std::sqrt(pow(x - itemX,2) + pow(y - itemY,2)) < 5.56 && it.at(i)->isGrabbable()) {
+		if (std::sqrt(pow(x - itemX,2) + pow(y - itemY,2)) < 5.5 && it.at(i)->isGrabbable()) {
 			it.at(i)->setVisible(true);
 		}
-		if (itemX >= x - 2 && itemX <= x + 3 && itemY >= y - 2 && itemY <= y + 3 && it.at(i)->isGrabbable()) {
+		if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 4 && it.at(i)->isGrabbable()) {
 			if (it.at(i)->isVisible()) {
 				
 				if (it.at(i)->getID() == IID_GOLD ) {
@@ -128,6 +128,8 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 		}
 	}
 }
+
+//itemX >= x - 2 && itemX <= x + 3 && itemY >= y - 2 && itemY <= y + 3
 
 /*
 int randomP(int i) {
