@@ -32,6 +32,13 @@ void StudentWorld::setUpItem(int num, const int id) {
 			Item* temp{};
 			if (id == IID_BOULDER) {
 				temp = new Boulder(coordinateX, coordinateY);
+				for (int i{ coordinateX }; i < coordinateX + 4; i++) {
+					for (int j{ coordinateY }; j < coordinateY + 4; j++) {
+						if (iceSheet[i][j] != nullptr && iceSheet[i][j]->isVisible()) {
+							iceSheet[i][j]->setVisible(false);
+						}
+					}
+				}
 				temp->setVisible(true);
 				itemV.push_back(temp);
 			}
@@ -61,6 +68,13 @@ void StudentWorld::setUpItem(int num, const int id) {
 			Item* temp{};
 			if (id == IID_BOULDER) {
 				temp = new Boulder(coordinateX, coordinateY);
+				for (int i{ coordinateX }; i < coordinateX + 4; i++) {
+					for (int j{ coordinateY }; j < coordinateY + 4; j++) {
+						if (iceSheet[i][j] != nullptr && iceSheet[i][j]->isVisible()) {
+							iceSheet[i][j]->setVisible(false);
+						}
+					}
+				}
 				temp->setVisible(true);
 				itemV.push_back(temp);
 			}
@@ -119,7 +133,7 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 				}
 				if (it.at(i)->getID() == IID_BARREL) {
 					playSound(SOUND_FOUND_OIL);
-					oil_found++; 
+					*oil_found += 1; 
 				}
 
 				it.at(i)->setVisible(false);
@@ -129,18 +143,3 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 	}
 }
 
-//itemX >= x - 2 && itemX <= x + 3 && itemY >= y - 2 && itemY <= y + 3
-
-/*
-int randomP(int i) {
-	srand(time(0));
-	i = rand() % 65;
-	return i;
-}
-*/
-
-//int ItemPlacement(int number) {
-//	srand(time(0));
-//	number = rand() % 65;
-//	return number;
-//}

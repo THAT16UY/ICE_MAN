@@ -67,7 +67,7 @@ class Item : public GraphObject {
 
 public:
 	Item(int imageID, int startX, int startY, Direction dir = none, double size = 1.0, unsigned int depth = 0);
-	~Item();
+	virtual ~Item();
 	
 	virtual bool isGrabbable() = 0;
 	virtual void setGrabbable(bool) = 0;
@@ -77,7 +77,7 @@ class Ice : public Item {
 
 public:
 	Ice(int startX, int startY);
-	~Ice();
+	virtual ~Ice();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
@@ -88,7 +88,7 @@ class Gold : public Item {
 
 public:
 	Gold(int startX, int startY);
-	~Gold();
+	virtual ~Gold();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
@@ -99,7 +99,7 @@ class Oil : public Item {
 
 public:
 	Oil(int startX, int startY);
-	~Oil();
+	virtual ~Oil();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
@@ -109,7 +109,7 @@ class Boulder : public Item {
 
 public:
 	Boulder(int startX, int startY);
-	~Boulder();
+	virtual ~Boulder();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
@@ -120,7 +120,7 @@ class Sonar : public Item {
 
 public:
 	Sonar(int startX, int startY);
-	~Sonar();
+	virtual ~Sonar();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
@@ -130,7 +130,7 @@ class Gun : public Item { //Water gun.
 
 public:
 	Gun(int startX, int startY);
-	~Gun();
+	virtual ~Gun();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
@@ -140,7 +140,7 @@ class Pool : public Item {
 	bool is_available{ true };
 public:
 	Pool(int startX, int startY);
-	~Pool();
+	virtual ~Pool();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
