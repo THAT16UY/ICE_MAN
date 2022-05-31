@@ -45,6 +45,15 @@ public:
 		setUpItem(*oil_barrels_number, IID_BARREL); //Oil is not visible
 		setUpItem(*gold_nugget_number, IID_GOLD); //Gold is not visible.
 
+		Item* tempSonar{ new Sonar(5,60) };
+		tempSonar->setVisible(true);
+
+		Item* tempPool{ new Pool(35,60) };
+		tempPool->setVisible(true);
+
+		itemV.push_back(tempSonar);
+		itemV.push_back(tempPool);
+
 		iceMan = new Iceman();
 		iceMan->setVisible(true);
 
@@ -87,13 +96,18 @@ public:
 
 		int ch;
 		if (getKey(ch) == true) {  // user hit a key this tick! 
-
+			bool isBoulder{ false };
 			switch (ch)
 			{
+				
 			case KEY_PRESS_LEFT:  // move player to the left ...;
-				if (x > 0) {
-					iceMan->moveTo(x - 1, y);
+				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
+					if (std::sqrt(pow((x - 1) - xCoordinatesBoulder.at(i), 2) + pow(y - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
 				}
+
+				if (isBoulder) {break;}
+
+				if (x > 0) {iceMan->moveTo(x - 1, y);}
 
 				iceMan->setDirection(GraphObject::left);
 				for(int i = x; i<x+4; i++){
@@ -102,10 +116,15 @@ public:
 					}
 				}
 				break;
+
 			case KEY_PRESS_RIGHT:  // move player to the right ...;
-				if (x < 60) {
-					iceMan->moveTo(x + 1, y);
+				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
+					if (std::sqrt(pow((x + 1) - xCoordinatesBoulder.at(i), 2) + pow(y - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
 				}
+
+				if (isBoulder) {break;}
+
+				if (x < 60) {iceMan->moveTo(x + 1, y);}
 	
 				iceMan->setDirection(GraphObject::right);
 				for (int i = x; i < x + 4; i++) {
@@ -114,10 +133,15 @@ public:
 					}
 				}
 				break;
+
 			case KEY_PRESS_DOWN:
-				if (y > 0) {
-					iceMan->moveTo(x, y - 1);
+				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
+					if (std::sqrt(pow(x - xCoordinatesBoulder.at(i), 2) + pow((y - 1)- yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
 				}
+
+				if (isBoulder) {break;}
+
+				if (y > 0) {iceMan->moveTo(x, y - 1);}
 	
 				iceMan->setDirection(GraphObject::down);
 				for (int i = x; i < x + 4; i++) {
@@ -126,10 +150,15 @@ public:
 					}
 				}
 				break;
+
 			case KEY_PRESS_UP:
-				if (y < 60) {
-					iceMan->moveTo(x, y + 1);
+				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
+					if (std::sqrt(pow(x - xCoordinatesBoulder.at(i), 2) + pow((y + 1) - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
 				}
+
+				if (isBoulder) {break;}
+
+				if (y < 60) {iceMan->moveTo(x, y + 1);}
 		
 				iceMan->setDirection(GraphObject::up);
 				for(int i = x; i< x + 4; i++){
@@ -138,6 +167,7 @@ public:
 					}
 				}
 				break;
+
 			case KEY_PRESS_SPACE:
 				//TODO: Find solution to making the splash invisible after it has moved, and add coalition detection with protester.
 				break;
@@ -153,6 +183,18 @@ public:
 					tempG->setGrabbable(false);
 					tempG->setVisible(true);
 					itemV.push_back(tempG);
+				}
+				break;
+			case 'z':
+			case 'Z':
+				playSound(SOUND_SONAR);
+				iceMan->decreaseSonar();
+				for (unsigned int i{ 0 }; i < itemV.size(); i++) {
+					int itemX = itemV.at(i)->getX();
+					int itemY = itemV.at(i)->getY();
+					if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 12 && itemV.at(i)->isGrabbable()) {
+						itemV.at(i)->setVisible(true);
+					}
 				}
 				break;
 			}
@@ -191,6 +233,8 @@ public:
 		}
 
 		itemV.clear();
+		xCoordinatesBoulder.clear();
+		yCoordinatesBoulder.clear();
 
 		for (int i = 0; i < 64; i++) {//Deleting iceSheet.
 			if (i == 31 || i == 32 || i == 33) { continue; }
@@ -216,6 +260,8 @@ private:
 	
 	Ice* iceSheet[65][65]{ nullptr };
 	std::vector<Item*> itemV;//This vector stores items: Boulders,Gold,Oil,Sonar,Pool.
+	std::vector<int> xCoordinatesBoulder{};
+	std::vector<int> yCoordinatesBoulder{};
 
 };
 
