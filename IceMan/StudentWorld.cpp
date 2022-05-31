@@ -50,7 +50,7 @@ void StudentWorld::setUpItem(int num, const int id) {
 			if (id == IID_BARREL) {
 				itemV.push_back(new Oil(coordinateX, coordinateY));
 			}
-			
+
 			boulder_count++;
 		}
 		else {
@@ -130,8 +130,8 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 		}
 		if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 4 && it.at(i)->isGrabbable()) {
 			if (it.at(i)->isVisible()) {
-				
-				if (it.at(i)->getID() == IID_GOLD ) {
+
+				if (it.at(i)->getID() == IID_GOLD) {
 					playSound(SOUND_GOT_GOODIE);
 					iceMan->increaseGold();
 				}

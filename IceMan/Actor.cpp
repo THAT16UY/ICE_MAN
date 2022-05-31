@@ -60,18 +60,18 @@ Protester::Protester(int imageID, int startX, int startY, Direction dir, double 
 	Actor(imageID, startX, startY, nullptr, dir, size, depth) { }
 
 void Protester::doSomething() {
-	
+
 }
 
-Protester::~Protester(){}
+Protester::~Protester() {}
 
 //----------------------------------------------------------------------------------------------------------------------PROTESTER END
 
 //----------------------------------------------------------------------------------------------------------------------H PROTESTER START
 HardcoreProtester::HardcoreProtester() :
-	Protester(IID_HARD_CORE_PROTESTER, 55, 60, left, 1.0, 0){ }
+	Protester(IID_HARD_CORE_PROTESTER, 55, 60, left, 1.0, 0) { }
 
-HardcoreProtester::~HardcoreProtester(){}
+HardcoreProtester::~HardcoreProtester() {}
 //----------------------------------------------------------------------------------------------------------------------H PROTESTER END
 
 //-----------------------------------------------------------------------------------------------------------------------ITEM START
@@ -82,7 +82,7 @@ Item::~Item() {}
 //-----------------------------------------------------------------------------------------------------------------------ITEM END
 
 //-----------------------------------------------------------------------------------------------------------------------ICE START
-Ice::Ice(int startX, int startY) : 
+Ice::Ice(int startX, int startY) :
 	Item(IID_ICE, startX, startY, none, 0.25, 1) {}
 
 bool Ice::isGrabbable() {
@@ -94,10 +94,10 @@ void Ice::setGrabbable(bool val) {
 
 Ice::~Ice() {}
 //-----------------------------------------------------------------------------------------------------------------------ICE END
- 
+
 //-----------------------------------------------------------------------------------------------------------------------GOLD START
 Gold::Gold(int startX, int startY) :
-	Item(IID_GOLD , startX , startY , none , 1, 0) {}
+	Item(IID_GOLD, startX, startY, none, 1, 0) {}
 
 bool Gold::isGrabbable() {
 	return is_available;
@@ -111,7 +111,7 @@ Gold::~Gold() {}
 //-----------------------------------------------------------------------------------------------------------------------GOLD END
 
 //-----------------------------------------------------------------------------------------------------------------------OIL START
-Oil::Oil(int startX, int startY) : Item(IID_BARREL, startX, startY, none, 1.0, 0){}
+Oil::Oil(int startX, int startY) : Item(IID_BARREL, startX, startY, none, 1.0, 0) {}
 
 //TODO : in the init() function, within the IceSheet cordinates declare oil xAxis & yAxis using random numbers.
 bool Oil::isGrabbable() {
@@ -126,7 +126,7 @@ Oil::~Oil() {}
 //-----------------------------------------------------------------------------------------------------------------------OIL END
 
 //-----------------------------------------------------------------------------------------------------------------------BOULDER START 
-Boulder::Boulder(int startX, int startY) : Item(IID_BOULDER, startX, startY, none, 1.0, 10){}
+Boulder::Boulder(int startX, int startY) : Item(IID_BOULDER, startX, startY, none, 1.0, 10) {}
 
 
 bool Boulder::isGrabbable() {
@@ -137,11 +137,11 @@ void Boulder::setGrabbable(bool val) {
 	return;
 }
 
-Boulder::~Boulder(){}
+Boulder::~Boulder() {}
 //-----------------------------------------------------------------------------------------------------------------------BOULDER END
 
 //-----------------------------------------------------------------------------------------------------------------------SONAR START
-Sonar::Sonar(int startX, int startY) : Item(IID_SONAR, startX, startY, none, 1.0, 0){}
+Sonar::Sonar(int startX, int startY) : Item(IID_SONAR, startX, startY, none, 1.0, 0) {}
 
 bool Sonar::isGrabbable() {
 	return is_available;
@@ -150,7 +150,7 @@ void Sonar::setGrabbable(bool val) {
 	is_available = val;
 }
 
-Sonar::~Sonar(){}
+Sonar::~Sonar() {}
 //-----------------------------------------------------------------------------------------------------------------------SONAR END
 
 //-----------------------------------------------------------------------------------------------------------------------GUN START
@@ -180,4 +180,3 @@ void Pool::setGrabbable(bool val) {
 
 Pool::~Pool() {}
 //-----------------------------------------------------------------------------------------------------------------------POOL END
-
