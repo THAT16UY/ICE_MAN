@@ -45,6 +45,15 @@ public:
 		setUpItem(*oil_barrels_number, IID_BARREL); //Oil is not visible
 		setUpItem(*gold_nugget_number, IID_GOLD); //Gold is not visible.
 
+		Item* tempSonar{ new Sonar(5,60) };
+		tempSonar->setVisible(true);
+
+		Item* tempPool{ new Pool(35,60) };
+		tempPool->setVisible(true);
+
+		itemV.push_back(tempSonar);
+		itemV.push_back(tempPool);
+
 		iceMan = new Iceman();
 		iceMan->setVisible(true);
 
@@ -185,6 +194,18 @@ public:
 					tempG->setGrabbable(false);
 					tempG->setVisible(true);
 					itemV.push_back(tempG);
+				}
+				break;
+			case 'z':
+			case 'Z':
+				playSound(SOUND_SONAR);
+				iceMan->decreaseSonar();
+				for (unsigned int i{ 0 }; i < itemV.size(); i++) {
+					int itemX = itemV.at(i)->getX();
+					int itemY = itemV.at(i)->getY();
+					if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 12 && itemV.at(i)->isGrabbable()) {
+						itemV.at(i)->setVisible(true);
+					}
 				}
 				break;
 			}

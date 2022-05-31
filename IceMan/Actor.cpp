@@ -11,7 +11,7 @@ Actor::~Actor() { }
 Iceman::Iceman() : Actor(IID_PLAYER, 30, 60, nullptr, right, 1.0, 0) { }
 
 void Iceman::increaseWater() {
-	water_units++;
+	water_units +=5;
 }
 void Iceman::increaseSonar() {
 	sonar++;

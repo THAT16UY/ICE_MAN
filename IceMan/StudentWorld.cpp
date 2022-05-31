@@ -139,6 +139,14 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 					playSound(SOUND_FOUND_OIL);
 					*oil_found += 1; 
 				}
+				if (it.at(i)->getID() == IID_SONAR) {
+					playSound(SOUND_GOT_GOODIE);
+					iceMan->increaseSonar();
+				}
+				if (it.at(i)->getID() == IID_WATER_POOL) {
+					playSound(SOUND_GOT_GOODIE);
+					iceMan->increaseWater();
+				}
 
 				it.at(i)->setVisible(false);
 				it.at(i)->setGrabbable(false);
