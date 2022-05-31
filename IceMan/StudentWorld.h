@@ -70,6 +70,7 @@ public:
 	bool IsIceThere(int x, int y);
 	void DestroyIce(int x, int y);
 	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
+	void ProtesterMovement(int x, int y);
 
 	virtual int move()
 	{

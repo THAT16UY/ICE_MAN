@@ -143,3 +143,12 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 	}
 }
 
+void StudentWorld::ProtesterMovement(int x, int y) {
+	srand((NULL));
+	int cordinatesX = rand() % 60;
+	int cordinatesY = rand() % 60;
+
+	if (std::sqrt(pow(x - cordinatesX, 2) + pow(y - cordinatesY, 2)) < 10 && IsIceThere()) {
+
+	}
+}
