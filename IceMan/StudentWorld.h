@@ -102,15 +102,11 @@ public:
 			case KEY_PRESS_LEFT:  // move player to the left ...;
 				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
 					if (std::sqrt(pow((x - 1) - xCoordinatesBoulder.at(i), 2) + pow(y - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
- 
-				}
-				if (isBoulder) {
-					break;
 				}
 
-				if (x > 0) {
-					iceMan->moveTo(x - 1, y);
-				}
+				if (isBoulder) {break;}
+
+				if (x > 0) {iceMan->moveTo(x - 1, y);}
 
 				iceMan->setDirection(GraphObject::left);
 				for(int i = x; i<x+4; i++){
@@ -119,18 +115,15 @@ public:
 					}
 				}
 				break;
+
 			case KEY_PRESS_RIGHT:  // move player to the right ...;
 				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
 					if (std::sqrt(pow((x + 1) - xCoordinatesBoulder.at(i), 2) + pow(y - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
-
-				}
-				if (isBoulder) {
-					break;
 				}
 
-				if (x < 60) {
-					iceMan->moveTo(x + 1, y);
-				}
+				if (isBoulder) {break;}
+
+				if (x < 60) {iceMan->moveTo(x + 1, y);}
 	
 				iceMan->setDirection(GraphObject::right);
 				for (int i = x; i < x + 4; i++) {
@@ -139,18 +132,15 @@ public:
 					}
 				}
 				break;
+
 			case KEY_PRESS_DOWN:
 				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
 					if (std::sqrt(pow(x - xCoordinatesBoulder.at(i), 2) + pow((y - 1)- yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
-
-				}
-				if (isBoulder) {
-					break;
 				}
 
-				if (y > 0) {
-					iceMan->moveTo(x, y - 1);
-				}
+				if (isBoulder) {break;}
+
+				if (y > 0) {iceMan->moveTo(x, y - 1);}
 	
 				iceMan->setDirection(GraphObject::down);
 				for (int i = x; i < x + 4; i++) {
@@ -159,18 +149,15 @@ public:
 					}
 				}
 				break;
+
 			case KEY_PRESS_UP:
 				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
 					if (std::sqrt(pow(x - xCoordinatesBoulder.at(i), 2) + pow((y + 1) - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
-
-				}
-				if (isBoulder) {
-					break;
 				}
 
-				if (y < 60) {
-					iceMan->moveTo(x, y + 1);
-				}
+				if (isBoulder) {break;}
+
+				if (y < 60) {iceMan->moveTo(x, y + 1);}
 		
 				iceMan->setDirection(GraphObject::up);
 				for(int i = x; i< x + 4; i++){
@@ -179,6 +166,7 @@ public:
 					}
 				}
 				break;
+
 			case KEY_PRESS_SPACE:
 				//TODO: Find solution to making the splash invisible after it has moved, and add coalition detection with protester.
 				break;
