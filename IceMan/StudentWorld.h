@@ -63,6 +63,14 @@ public:
 		HProtester = new HardcoreProtester();
 		HProtester->setVisible(true);
 
+		
+		actorV.push_back(new Protester(IID_PROTESTER, 30, 30, GraphObject::left, 1.0, 0));
+		actorV.push_back(new Protester(IID_PROTESTER, 30, 20, GraphObject::left, 1.0, 0));
+		actorV.push_back(new Protester(IID_PROTESTER, 30, 10, GraphObject::left, 1.0, 0));
+
+		std::for_each(actorV.begin(), actorV.end(), [](Actor* &act) {act->setVisible(true); });
+
+
 		setGameStatText("Lvl: " + std::to_string(getLevel()) +
 			" Lives: " + std::to_string(getLives()) +
 			" Hlth:" + std::to_string(iceMan->getHit() * 10) +
@@ -79,6 +87,7 @@ public:
 	bool IsIceThere(int x, int y);
 	void DestroyIce(int x, int y);
 	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
+	void actorInteraction(int x, int y, std::vector<Actor*> &it);
 
 	virtual int move()
 	{
@@ -88,6 +97,7 @@ public:
 		int y = iceMan->getY();
 		
 		itemInteraction(x, y, itemV); //Checking for any objects with in a 5.5(to make visible) & 4(to pick up) radius of the iceman.
+		actorInteraction(x,y, actorV);
 
 		if (*oil_found == *oil_barrels_number) {
 			return GWSTATUS_FINISHED_LEVEL;
@@ -102,6 +112,9 @@ public:
 			case KEY_PRESS_LEFT:  // move player to the left ...;
 				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
 					if (std::sqrt(pow((x - 1) - xCoordinatesBoulder.at(i), 2) + pow(y - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
+				}
+				for (unsigned int i{ 0 }; i < actorV.size(); i++) {
+					if (std::sqrt(pow((x - 1) - actorV.at(i)->getX(), 2) + pow(y - actorV.at(i)->getY(), 2)) < 3) { isBoulder = true; }
 				}
 
 				if (isBoulder) {break;}
@@ -120,6 +133,9 @@ public:
 				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
 					if (std::sqrt(pow((x + 1) - xCoordinatesBoulder.at(i), 2) + pow(y - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
 				}
+				for (unsigned int i{ 0 }; i < actorV.size(); i++) {
+					if (std::sqrt(pow((x + 1) - actorV.at(i)->getX(), 2) + pow(y - actorV.at(i)->getY(), 2)) < 3) { isBoulder = true; }
+				}
 
 				if (isBoulder) {break;}
 
@@ -137,6 +153,9 @@ public:
 				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
 					if (std::sqrt(pow(x - xCoordinatesBoulder.at(i), 2) + pow((y - 1)- yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
 				}
+				for (unsigned int i{ 0 }; i < actorV.size(); i++) {
+					if (std::sqrt(pow(x - actorV.at(i)->getX(), 2) + pow((y - 1) - actorV.at(i)->getY(), 2)) < 3) { isBoulder = true; }
+				}
 
 				if (isBoulder) {break;}
 
@@ -153,6 +172,9 @@ public:
 			case KEY_PRESS_UP:
 				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
 					if (std::sqrt(pow(x - xCoordinatesBoulder.at(i), 2) + pow((y + 1) - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
+				}
+				for (unsigned int i{ 0 }; i < actorV.size(); i++) {
+					if (std::sqrt(pow(x - actorV.at(i)->getX(), 2) + pow((y + 1) - actorV.at(i)->getY(), 2)) < 3) { isBoulder = true; }
 				}
 
 				if (isBoulder) {break;}
@@ -186,6 +208,7 @@ public:
 				break;
 			case 'z':
 			case 'Z':
+				if (iceMan->getSonar() == 0) { break; }
 				playSound(SOUND_SONAR);
 				iceMan->decreaseSonar();
 				for (unsigned int i{ 0 }; i < itemV.size(); i++) {
@@ -202,7 +225,9 @@ public:
 		
 		int px = protester->getX();
 		int py = protester->getY();
-		//protester->moveTo(px - 1, py); // protester movement
+		//if (px != 30) { protester->moveTo(30, 60); } // protester movement
+		if (px == 30) { protester->moveTo(30, 0); }
+
 		setGameStatText("Lvl: " + std::to_string(getLevel()) +
 			" Lives: " + std::to_string(getLives()) +
 			" Hlth:" + std::to_string(iceMan->getHit() * 10) +
@@ -261,7 +286,7 @@ private:
 	std::vector<Item*> itemV;//This vector stores items: Boulders,Gold,Oil,Sonar,Pool.
 	std::vector<int> xCoordinatesBoulder{};
 	std::vector<int> yCoordinatesBoulder{};
-
+	std::vector<Actor*> actorV;
 };
 
 #endif // STUDENTWORLD_H_

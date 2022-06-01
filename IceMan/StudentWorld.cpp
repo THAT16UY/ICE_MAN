@@ -155,3 +155,18 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 	}
 }
 
+void StudentWorld::actorInteraction(int x, int y, std::vector<Actor*>& it) {
+
+	for (unsigned int i{ 0 }; i < it.size(); i++) {
+		int itemX = it.at(i)->getX();
+		int itemY = it.at(i)->getY();
+		
+		if (it.at(i)->isVisible() && (it.at(i)->getID() == IID_HARD_CORE_PROTESTER || it.at(i)->getID() == IID_PROTESTER) ) {
+			if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 4) {
+				iceMan->decreaseHit();
+				playSound(SOUND_PLAYER_ANNOYED);
+			}
+		}
+
+	}
+}
