@@ -120,12 +120,12 @@ void StudentWorld::DestroyIce(int x, int y) {
 	return;
 }
 
-void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
-	
+void StudentWorld::itemInteraction(int x, int y, std::vector<Item*>& it) {
+
 	for (unsigned int i{ 0 }; i < it.size(); i++) {
 		int itemX = it.at(i)->getX();
 		int itemY = it.at(i)->getY();
-		if (std::sqrt(pow(x - itemX,2) + pow(y - itemY,2)) < 5.5 && it.at(i)->isGrabbable()) {
+		if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 5.5 && it.at(i)->isGrabbable()) {
 			it.at(i)->setVisible(true);
 		}
 		if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 4 && it.at(i)->isGrabbable()) {
@@ -137,7 +137,7 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 				}
 				if (it.at(i)->getID() == IID_BARREL) {
 					playSound(SOUND_FOUND_OIL);
-					*oil_found += 1; 
+					*oil_found += 1;
 				}
 				if (it.at(i)->getID() == IID_SONAR) {
 					playSound(SOUND_GOT_GOODIE);
@@ -155,20 +155,18 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 	}
 }
 
-void StudentWorld::ProtesterMovement(int x, int y) {
-	srand(time(NULL));
-	int cordinatesX;
-	int cordinatesY;
-	int firststeps = 1;
-	if (firststeps == 1) {
-		cordinatesX = rand() % 60;
-		cordinatesY = rand() % 60;
-		firststeps--;
-	}
-	//cout << "movement check!" << endl;
-	cout << std::sqrt(pow(x - cordinatesX, 2) + pow(y - cordinatesY, 2)) << endl;
-	if (std::sqrt(pow(x - cordinatesX, 2) + pow(y - cordinatesY, 2)) < 50) {	
-		protester->moveTo(cordinatesX, cordinatesY);
+void StudentWorld::actorInteraction(int x, int y, std::vector<Actor*>& it) {
+
+	for (unsigned int i{ 0 }; i < it.size(); i++) {
+		int itemX = it.at(i)->getX();
+		int itemY = it.at(i)->getY();
+
+		if (it.at(i)->isVisible() && (it.at(i)->getID() == IID_HARD_CORE_PROTESTER || it.at(i)->getID() == IID_PROTESTER)) {
+			if (std::sqrt(pow(x - itemX, 2) + pow(y - itemY, 2)) < 4) {
+				iceMan->decreaseHit();
+				playSound(SOUND_PLAYER_ANNOYED);
+			}
+		}
 
 	}
 }
