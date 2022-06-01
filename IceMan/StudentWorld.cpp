@@ -156,11 +156,19 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 }
 
 void StudentWorld::ProtesterMovement(int x, int y) {
-	srand((NULL));
-	int cordinatesX = rand() % 60;
-	int cordinatesY = rand() % 60;
-
-	if (std::sqrt(pow(x - cordinatesX, 2) + pow(y - cordinatesY, 2)) < 10 && IsIceThere()) {
+	srand(time(NULL));
+	int cordinatesX;
+	int cordinatesY;
+	int firststeps = 1;
+	if (firststeps == 1) {
+		cordinatesX = rand() % 60;
+		cordinatesY = rand() % 60;
+		firststeps--;
+	}
+	//cout << "movement check!" << endl;
+	cout << std::sqrt(pow(x - cordinatesX, 2) + pow(y - cordinatesY, 2)) << endl;
+	if (std::sqrt(pow(x - cordinatesX, 2) + pow(y - cordinatesY, 2)) < 50) {	
+		protester->moveTo(cordinatesX, cordinatesY);
 
 	}
 }

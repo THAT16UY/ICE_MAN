@@ -203,6 +203,7 @@ public:
 		
 		int px = protester->getX();
 		int py = protester->getY();
+		ProtesterMovement(px, py);
 		//protester->moveTo(px - 1, py); // protester movement
 		setGameStatText("Lvl: " + std::to_string(getLevel()) +
 			" Lives: " + std::to_string(getLives()) +
