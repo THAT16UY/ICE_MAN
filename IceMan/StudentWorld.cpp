@@ -112,6 +112,13 @@ bool StudentWorld::IsIceThere(int x, int y) {
 	return false;
 }
 
+bool StudentWorld::OffTheGrid(int x, int y) {
+	if ((x > 60 || x < 0) || (y > 60 || y < 0)) {
+		return true;
+	}
+	return false;
+}
+
 void StudentWorld::DestroyIce(int x, int y) {
 	if (iceSheet[x][y] != nullptr && iceSheet[x][y]->isVisible()) {
 		playSound(SOUND_DIG);
@@ -173,42 +180,123 @@ void StudentWorld::actorInteraction(int x, int y, std::vector<Actor*>& it) {
 
 void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 	queue<pair<int, int>> q;
-	pair<int, int> p;
+	pair<int, int> goal;
+	vector<pair<int, int>> squares;
 
 	shortfield[x][y] = new int(0);
-	p.first = x;
-	p.second = y;
+	goal.first = x;
+	goal.second = y;
 
-	q.push(p);
+	q.push(goal);
 
 	while (!q.empty()) {
 
 		int currentX = q.front().first;
 		int currentY = q.front().second;
-		int count = 0;
+		int actorX = ax;
+		int actorY = ay;
 
-		if (IsIceThere(currentX, currentY)) {
+		//cout << "checking X: " << currentX << " and Y: " << currentY << endl;
+
+		q.pop();
+		int count = 0;
+		
+		if (IsIceThere(currentX, currentY)  || OffTheGrid(currentX, currentY)){
+			continue;
+		}
+		
+		if ((currentX == actorX) && (currentY == actorY) ){
+			//cout << "Protester found!!" << endl;
 			continue;
 		}
 
+		if (*(shortfield[currentX][currentY]) != 1000)
+		{
+			continue;
+		}
+
+		/*
+		if (squares.empty()) {
+			continue;
+		}
+		*/
+
+		delete shortfield[currentX][currentY];
+		shortfield[currentX][currentY] = new int(count + 1);
+
+		q.push(pair<int, int>(currentX, currentY - 1));
+		q.push(pair<int, int>(currentX, currentY + 1));
+		q.push(pair<int, int>(currentX - 1, currentY));
+		q.push(pair<int, int>(currentX + 1, currentY));
+		/*
 		if (!IsIceThere(currentX, currentY + 1) && currentX <= 60 && currentY <= 60)
 		{
 			bool M_allowed = true;
 			for (int i = currentX; i < currentX + 4; i++) {
-				for (int j = currentY; i < currentY + 4; i++) {
+				for (int j = currentY; j < currentY + 4; j++) {
 					if (IsIceThere(i, j)) {
+						cout << "Cant go up" << endl;
 						M_allowed = false;
 						continue;
 					}
 				}
 			}
 			if (M_allowed == true) {
-
-				q.push(pair<int, int>(currentX, currentY));
+				//delete shortfield[currentX, currentY + 1];
+				//shortfield[currentX, currentY + 1] = new int(0);
+				q.push(pair<int, int>(currentX, currentY + 1));
 			}
 		}
 
-		count++;
-	}
+		if (!IsIceThere(currentX, currentY - 1) && currentX <= 60 && currentY <= 60) {
+			bool M_allowed = true;
+			for (int i = currentX; i < currentX + 4; i++) {
+				for (int j = currentY; j < currentY + 4; j++) {
+					if (IsIceThere(i, j)) {
+						//cout << "Cant go down" << endl;
+						M_allowed = false;
+						continue;
+					}
+				}
+			}
+			if (M_allowed == true) {
+				q.push(pair<int, int>(currentX, currentY - 1));
+			}
+		}
 
+		if (!IsIceThere(currentX + 1, currentY) && currentX <= 60 && currentY <= 60) {
+			bool M_allowed = true;
+			for (int i = currentX; i < currentX + 4; i++) {
+				for (int j = currentY; j < currentY + 4; j++) {
+					if (IsIceThere(i, j)) {
+						cout << "Cant go right" << endl;
+						M_allowed = false;
+						continue;
+					}
+				}
+			}
+			if (M_allowed == true) {
+				q.push(pair<int, int>(currentX + 1, currentY));
+			}
+		}
+
+		if (!IsIceThere(currentX - 1, currentY) && currentX <= 60 && currentY <= 60) {
+			bool M_allowed = true;
+			for (int i = currentX; i < currentX + 4; i++) {
+				for (int j = currentY; j < currentY + 4; j++) {
+					if (IsIceThere(i, j)) {
+						cout << "Cant go left" << endl;
+						M_allowed = false;
+						continue;
+					}
+				}
+			}
+			if (M_allowed == true) {
+				q.push(pair<int, int>(currentX - 1, currentY));
+			}
+		}
+		*/
+		//count++;
+	}
+	
 }

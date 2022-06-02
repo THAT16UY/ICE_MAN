@@ -89,6 +89,7 @@ public:
 
 	int ItemPlacement(int i);
 	bool IsIceThere(int x, int y);
+	bool OffTheGrid(int x, int y);
 	void DestroyIce(int x, int y);
 	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
 	void actorInteraction(int x, int y, std::vector<Actor*> &it);
@@ -230,6 +231,7 @@ public:
 		
 		int px = protester->getX();
 		int py = protester->getY();
+		ShortestPath(px, py, 30, 30);
 		//if (px != 30) { protester->moveTo(30, 60); } // protester movement
 		//if (px == 30) { protester->moveTo(30, 0); }
 
@@ -287,7 +289,7 @@ private:
 	Actor* protester{};//temp, used for testing.
 	Protester* HProtester{};//temp, used for testing.
 
-	int* shortfield[64][64]; // new
+	int* shortfield[64][64]; 
 	
 	Ice* iceSheet[65][65]{ nullptr };
 	std::vector<Item*> itemV;//This vector stores items: Boulders,Gold,Oil,Sonar,Pool.
