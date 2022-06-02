@@ -170,3 +170,45 @@ void StudentWorld::actorInteraction(int x, int y, std::vector<Actor*>& it) {
 
 	}
 }
+
+void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
+	queue<pair<int, int>> q;
+	pair<int, int> p;
+
+	shortfield[x][y] = new int(0);
+	p.first = x;
+	p.second = y;
+
+	q.push(p);
+
+	while (!q.empty()) {
+
+		int currentX = q.front().first;
+		int currentY = q.front().second;
+		int count = 0;
+
+		if (IsIceThere(currentX, currentY)) {
+			continue;
+		}
+
+		if (!IsIceThere(currentX, currentY + 1) && currentX <= 60 && currentY <= 60)
+		{
+			bool M_allowed = true;
+			for (int i = currentX; i < currentX + 4; i++) {
+				for (int j = currentY; i < currentY + 4; i++) {
+					if (IsIceThere(i, j)) {
+						M_allowed = false;
+						continue;
+					}
+				}
+			}
+			if (M_allowed == true) {
+
+				q.push(pair<int, int>(currentX, currentY));
+			}
+		}
+
+		count++;
+	}
+
+}

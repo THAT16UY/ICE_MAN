@@ -1,6 +1,8 @@
 #ifndef ACTOR_H_
 #define ACTOR_H_
 
+#include <queue>
+
 #include "GraphObject.h"
 class StudentWorld; // This is an incomplete type. Also known as a forward declaration.
 
@@ -50,6 +52,8 @@ public:
 	 Protester(int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
 
 	 void doSomething();
+
+	 void PMovement(int ax, int ay, int x, int y);
 
 	~Protester();
 };

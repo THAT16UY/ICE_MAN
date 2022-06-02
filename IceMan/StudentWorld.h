@@ -18,7 +18,11 @@ public:
 	StudentWorld(std::string assetDir)
 		: GameWorld(assetDir)
 	{
-		
+		for (int i = 0; i < 64; i++) {
+			for (int j = 0; j < 64; j++) {
+				shortfield[i][j] = new int(1000);
+			}
+		}
 	}
 
 	void setUpItem(int num, const int id);
@@ -88,6 +92,7 @@ public:
 	void DestroyIce(int x, int y);
 	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
 	void actorInteraction(int x, int y, std::vector<Actor*> &it);
+	void ShortestPath(int ax, int ay, int x, int y);
 
 	virtual int move()
 	{
@@ -226,7 +231,7 @@ public:
 		int px = protester->getX();
 		int py = protester->getY();
 		//if (px != 30) { protester->moveTo(30, 60); } // protester movement
-		if (px == 30) { protester->moveTo(30, 0); }
+		//if (px == 30) { protester->moveTo(30, 0); }
 
 		setGameStatText("Lvl: " + std::to_string(getLevel()) +
 			" Lives: " + std::to_string(getLives()) +
@@ -281,6 +286,8 @@ private:
 	Iceman* iceMan{};
 	Actor* protester{};//temp, used for testing.
 	Protester* HProtester{};//temp, used for testing.
+
+	int* shortfield[64][64]; // new
 	
 	Ice* iceSheet[65][65]{ nullptr };
 	std::vector<Item*> itemV;//This vector stores items: Boulders,Gold,Oil,Sonar,Pool.
