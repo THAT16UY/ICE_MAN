@@ -52,6 +52,9 @@ public:
 		setUpItem(*oil_barrels_number, IID_BARREL); //Oil is not visible
 		setUpItem(*gold_nugget_number, IID_GOLD); //Gold is not visible.
 
+		gunSquirt = new Gun(30,60);
+		gunSquirt->setVisible(false);
+
 		Item* tempSonar{ new Sonar(5,60) };
 		tempSonar->setVisible(true);
 
@@ -127,9 +130,14 @@ public:
 
 				if (isBoulder) {break;}
 
-				if (x > 0) {iceMan->moveTo(x - 1, y);}
+				if (x > 0) {
+					iceMan->moveTo(x - 1, y);
+					gunSquirt->moveTo(iceMan->getX(), iceMan->getY());
+					gunSquirt->setVisible(false);
+				}
 
 				iceMan->setDirection(GraphObject::left);
+				gunSquirt->setDirection(GraphObject::left);
 				for(int i = x; i<x+4; i++){
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
@@ -147,9 +155,14 @@ public:
 
 				if (isBoulder) {break;}
 
-				if (x < 60) {iceMan->moveTo(x + 1, y);}
+				if (x < 60) {
+					iceMan->moveTo(x + 1, y);
+					gunSquirt->moveTo(iceMan->getX(), iceMan->getY());
+					gunSquirt->setVisible(false);
+				}
 	
 				iceMan->setDirection(GraphObject::right);
+				gunSquirt->setDirection(GraphObject::right);
 				for (int i = x; i < x + 4; i++) {
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
@@ -167,9 +180,14 @@ public:
 
 				if (isBoulder) {break;}
 
-				if (y > 0) {iceMan->moveTo(x, y - 1);}
+				if (y > 0) {
+					iceMan->moveTo(x, y - 1);
+					gunSquirt->moveTo(iceMan->getX(), iceMan->getY());
+					gunSquirt->setVisible(false);
+				}
 	
 				iceMan->setDirection(GraphObject::down);
+				gunSquirt->setDirection(GraphObject::down);
 				for (int i = x; i < x + 4; i++) {
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
@@ -187,9 +205,14 @@ public:
 
 				if (isBoulder) {break;}
 
-				if (y < 60) {iceMan->moveTo(x, y + 1);}
+				if (y < 60) {
+					iceMan->moveTo(x, y + 1);
+					gunSquirt->moveTo(iceMan->getX(), iceMan->getY());
+					gunSquirt->setVisible(false);
+				}
 		
 				iceMan->setDirection(GraphObject::up);
+				gunSquirt->setDirection(GraphObject::up);
 				for(int i = x; i< x + 4; i++){
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
@@ -198,7 +221,23 @@ public:
 				break;
 
 			case KEY_PRESS_SPACE:
-				//TODO: Find solution to making the splash invisible after it has moved, and add coalition detection with protester.
+				gunSquirt->setVisible(true);
+				playSound(SOUND_PLAYER_SQUIRT);
+				switch (gunSquirt->getDirection())
+				{
+				case GraphObject::up:
+					gunSquirt->moveTo(x, y + 12);
+					break;
+				case GraphObject::down:
+					gunSquirt->moveTo(x, y - 12);
+					break;
+				case GraphObject::left:
+					gunSquirt->moveTo(x - 12, y);
+					break;
+				case GraphObject::right:
+					gunSquirt->moveTo(x + 12, y);
+					break;
+				}
 
 				break;
 
@@ -327,7 +366,8 @@ private:
 	std::vector<int> xCoordinatesBoulder{};
 	std::vector<int> yCoordinatesBoulder{};
 	std::vector<Actor*> actorV;
-	std::vector<Item*> gunSquirt;
+
+	Item* gunSquirt{};
 };
 
 #endif // STUDENTWORLD_H_
