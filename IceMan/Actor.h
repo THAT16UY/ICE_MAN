@@ -110,7 +110,7 @@ public:
 };
 
 class Boulder : public Item {
-
+	bool it_fell{ false };
 public:
 	Boulder(int startX, int startY);
 	virtual ~Boulder();

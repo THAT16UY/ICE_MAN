@@ -9,6 +9,7 @@
 #include <vector>
 #include <ctime>
 #include <cmath>
+#include <chrono>
 
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
 
@@ -30,6 +31,8 @@ public:
 	virtual int init()
 	{
 		//For-loop sets up the ice sheet.
+		start = std::chrono::steady_clock::now();
+
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) {
 			if (xAxis == 30 || xAxis == 31 || xAxis == 32 || xAxis == 33) { continue; }
 			for (int yAxis{ 0 }; yAxis < 60; yAxis++) {
@@ -196,6 +199,7 @@ public:
 
 			case KEY_PRESS_SPACE:
 				//TODO: Find solution to making the splash invisible after it has moved, and add coalition detection with protester.
+
 				break;
 
 			case KEY_PRESS_ESCAPE:
@@ -226,6 +230,34 @@ public:
 				break;
 			}
 			
+		}
+
+		
+		for (int i{ 0 }; i < itemV.size(); i++) {
+			if (itemV.at(i)->getID() != IID_BOULDER) { continue; }
+			
+			bool isIce{ false };
+			for (int j{ itemV.at(i)->getX() }; j < itemV.at(i)->getX() + 3; j++) {
+				if (IsIceThere(j, itemV.at(i)->getY() - 1)) {
+					std::cout << IsIceThere(j, itemV.at(i)->getY() - 1) << std::endl;
+					isIce = true;
+				}
+			}
+			if (!isIce) { 
+				int a{itemV.at(i)->getY()}; // a represents the y-coordinate
+				
+				for (int b{ itemV.at(i)->getX() }; b < itemV.at(i)->getX() + 3; b++) {
+					for (; a > 0; a--) {
+						if (IsIceThere(b,a)) {
+							itemV.at(i)->moveTo(itemV.at(i)->getX(), a);
+							playSound(SOUND_FALLING_ROCK);
+							break;
+						}
+					}
+				}
+				
+				
+			}
 		}
 		
 		int px = protester->getX();
@@ -286,6 +318,7 @@ private:
 	Iceman* iceMan{};
 	Actor* protester{};//temp, used for testing.
 	Protester* HProtester{};//temp, used for testing.
+	std::chrono::steady_clock::time_point start;
 
 	int* shortfield[64][64]; // new
 	
@@ -294,6 +327,7 @@ private:
 	std::vector<int> xCoordinatesBoulder{};
 	std::vector<int> yCoordinatesBoulder{};
 	std::vector<Actor*> actorV;
+	std::vector<Item*> gunSquirt;
 };
 
 #endif // STUDENTWORLD_H_
