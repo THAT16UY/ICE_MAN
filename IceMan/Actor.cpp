@@ -160,7 +160,9 @@ Sonar::~Sonar() {}
 //-----------------------------------------------------------------------------------------------------------------------SONAR END
 
 //-----------------------------------------------------------------------------------------------------------------------GUN START
-Gun::Gun(int startX, int startY) : Item(IID_WATER_SPURT, startX, startY, none, 1.0, 0) {}
+Gun::Gun(int startX, int startY) : Item(IID_WATER_SPURT, startX, startY, none, 1.0, 0) {
+	start = std::chrono::steady_clock::now();
+}
 
 //TODO : in the init() function, within the IceSheet cordinates declare Gun xAxis & yAxis using random numbers.
 bool Gun::isGrabbable() {
@@ -168,6 +170,18 @@ bool Gun::isGrabbable() {
 }
 void Gun::setGrabbable(bool val) {
 	return;
+}
+void Gun::terminate() {
+
+	if (!this->isVisible()) { return; }
+
+	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end - start;
+
+	if (elapsed_seconds.count() > .5) {
+		this->setVisible(false);
+	}
+
 }
 Gun::~Gun() {}
 //-----------------------------------------------------------------------------------------------------------------------GUN END

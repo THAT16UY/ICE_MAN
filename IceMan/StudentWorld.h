@@ -31,7 +31,7 @@ public:
 	virtual int init()
 	{
 		//For-loop sets up the ice sheet.
-		start = std::chrono::steady_clock::now();
+		
 
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) {
 			if (xAxis == 30 || xAxis == 31 || xAxis == 32 || xAxis == 33) { continue; }
@@ -51,9 +51,6 @@ public:
 		setUpItem(*boulder_number, IID_BOULDER); //Bouders are visible TODO: make ice surounding boulder invisible.
 		setUpItem(*oil_barrels_number, IID_BARREL); //Oil is not visible
 		setUpItem(*gold_nugget_number, IID_GOLD); //Gold is not visible.
-
-		gunSquirt = new Gun(30,60);
-		gunSquirt->setVisible(false);
 
 		Item* tempSonar{ new Sonar(5,60) };
 		tempSonar->setVisible(true);
@@ -110,6 +107,12 @@ public:
 		itemInteraction(x, y, itemV); //Checking for any objects with in a 5.5(to make visible) & 4(to pick up) radius of the iceman.
 		actorInteraction(x,y, actorV);
 
+		if (!gunSquirts.empty()) {
+			for (auto g : gunSquirts) {
+				g->terminate();
+			}
+		}
+
 		if (*oil_found == *oil_barrels_number) {
 			return GWSTATUS_FINISHED_LEVEL;
 		}
@@ -132,12 +135,9 @@ public:
 
 				if (x > 0) {
 					iceMan->moveTo(x - 1, y);
-					gunSquirt->moveTo(iceMan->getX(), iceMan->getY());
-					gunSquirt->setVisible(false);
 				}
 
 				iceMan->setDirection(GraphObject::left);
-				gunSquirt->setDirection(GraphObject::left);
 				for(int i = x; i<x+4; i++){
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
@@ -157,12 +157,9 @@ public:
 
 				if (x < 60) {
 					iceMan->moveTo(x + 1, y);
-					gunSquirt->moveTo(iceMan->getX(), iceMan->getY());
-					gunSquirt->setVisible(false);
 				}
 	
 				iceMan->setDirection(GraphObject::right);
-				gunSquirt->setDirection(GraphObject::right);
 				for (int i = x; i < x + 4; i++) {
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
@@ -182,12 +179,9 @@ public:
 
 				if (y > 0) {
 					iceMan->moveTo(x, y - 1);
-					gunSquirt->moveTo(iceMan->getX(), iceMan->getY());
-					gunSquirt->setVisible(false);
 				}
 	
 				iceMan->setDirection(GraphObject::down);
-				gunSquirt->setDirection(GraphObject::down);
 				for (int i = x; i < x + 4; i++) {
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
@@ -207,12 +201,9 @@ public:
 
 				if (y < 60) {
 					iceMan->moveTo(x, y + 1);
-					gunSquirt->moveTo(iceMan->getX(), iceMan->getY());
-					gunSquirt->setVisible(false);
 				}
 		
 				iceMan->setDirection(GraphObject::up);
-				gunSquirt->setDirection(GraphObject::up);
 				for(int i = x; i< x + 4; i++){
 					for (int j = y; j < y + 4; j++) {
 						DestroyIce(i, j);
@@ -221,24 +212,37 @@ public:
 				break;
 
 			case KEY_PRESS_SPACE:
-				gunSquirt->setVisible(true);
+				if (iceMan->getWater() <= 0) { break; }
 				playSound(SOUND_PLAYER_SQUIRT);
-				switch (gunSquirt->getDirection())
+				switch (iceMan->getDirection())
 				{
 				case GraphObject::up:
+					gunSquirt = new Gun(iceMan->getX(), iceMan->getY());
+					gunSquirt->setDirection(GraphObject::up);
+					gunSquirt->setVisible(true);
 					gunSquirt->moveTo(x, y + 12);
 					break;
 				case GraphObject::down:
+					gunSquirt = new Gun(iceMan->getX(), iceMan->getY());
+					gunSquirt->setDirection(GraphObject::down);
+					gunSquirt->setVisible(true);
 					gunSquirt->moveTo(x, y - 12);
 					break;
 				case GraphObject::left:
+					gunSquirt = new Gun(iceMan->getX(), iceMan->getY());
+					gunSquirt->setDirection(GraphObject::left);
+					gunSquirt->setVisible(true);
 					gunSquirt->moveTo(x - 12, y);
 					break;
 				case GraphObject::right:
+					gunSquirt = new Gun(iceMan->getX(), iceMan->getY());
+					gunSquirt->setDirection(GraphObject::right);
+					gunSquirt->setVisible(true);
 					gunSquirt->moveTo(x + 12, y);
 					break;
 				}
-
+				gunSquirts.push_back(gunSquirt);//pointer saved to be deleted later.
+				iceMan->decreaseWater();
 				break;
 
 			case KEY_PRESS_ESCAPE:
@@ -332,6 +336,13 @@ public:
 			ite = nullptr;
 		}
 
+		for (Item* item : gunSquirts) {
+			delete item;
+			item = nullptr;
+		}
+
+		gunSquirts.clear();
+
 		itemV.clear();
 		xCoordinatesBoulder.clear();
 		yCoordinatesBoulder.clear();
@@ -357,7 +368,7 @@ private:
 	Iceman* iceMan{};
 	Actor* protester{};//temp, used for testing.
 	Protester* HProtester{};//temp, used for testing.
-	std::chrono::steady_clock::time_point start;
+	
 
 	int* shortfield[64][64]; // new
 	
@@ -367,7 +378,8 @@ private:
 	std::vector<int> yCoordinatesBoulder{};
 	std::vector<Actor*> actorV;
 
-	Item* gunSquirt{};
+	std::vector<Gun*> gunSquirts{};
+	Gun* gunSquirt{};
 };
 
 #endif // STUDENTWORLD_H_

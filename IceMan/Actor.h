@@ -2,6 +2,7 @@
 #define ACTOR_H_
 
 #include <queue>
+#include <chrono>
 
 #include "GraphObject.h"
 class StudentWorld; // This is an incomplete type. Also known as a forward declaration.
@@ -131,13 +132,15 @@ public:
 };
 
 class Gun : public Item { //Water gun.
-
+	std::chrono::steady_clock::time_point start;
+	
 public:
 	Gun(int startX, int startY);
 	virtual ~Gun();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void terminate();
 };
 
 class Pool : public Item {
