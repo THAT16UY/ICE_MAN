@@ -181,9 +181,9 @@ void StudentWorld::actorInteraction(int x, int y, std::vector<Actor*>& it) {
 void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 	queue<pair<int, int>> q;
 	pair<int, int> goal;
-	vector<pair<int, int>> squares;
 
 	shortfield[x][y] = new int(0);
+	visited[x][y] = true; 
 	goal.first = x;
 	goal.second = y;
 
@@ -196,24 +196,32 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 		int actorX = ax;
 		int actorY = ay;
 
-		//cout << "checking X: " << currentX << " and Y: " << currentY << endl;
+		cout << "Size of q: " << q.size() << endl;
 
 		q.pop();
+		//cout << "checking X: " << currentX << " and Y: " << currentY << endl;
+		//*(visited[currentX][currentY]) = true;
 		int count = 0;
-		
+
+		if (currentX == actorX && currentY == actorY) {
+			cout << "protester found." << endl;
+		}
+		/*
 		if (IsIceThere(currentX, currentY)  || OffTheGrid(currentX, currentY)){
 			continue;
 		}
 		
-		if ((currentX == actorX) && (currentY == actorY) ){
-			//cout << "Protester found!!" << endl;
-			continue;
+		if (shortfield[x][y] == shortfield[ax][ax]){
+			cout << "Protester found!!" << endl;
+			break;
 		}
 
+		/*
 		if (*(shortfield[currentX][currentY]) != 1000)
 		{
 			continue;
 		}
+		*/
 
 		/*
 		if (squares.empty()) {
@@ -221,21 +229,25 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 		}
 		*/
 
+		/*
 		delete shortfield[currentX][currentY];
 		shortfield[currentX][currentY] = new int(count + 1);
-
+		*/
+		/*
 		q.push(pair<int, int>(currentX, currentY - 1));
 		q.push(pair<int, int>(currentX, currentY + 1));
 		q.push(pair<int, int>(currentX - 1, currentY));
 		q.push(pair<int, int>(currentX + 1, currentY));
-		/*
-		if (!IsIceThere(currentX, currentY + 1) && currentX <= 60 && currentY <= 60)
+		*/
+		
+		if (!IsIceThere(currentX, currentY + 1) && !OffTheGrid(currentX, currentY + 1) || visited[currentX][currentY] == false)
 		{
+			int checkingY = currentY + 1;
+			int checkingX = currentX;
 			bool M_allowed = true;
 			for (int i = currentX; i < currentX + 4; i++) {
 				for (int j = currentY; j < currentY + 4; j++) {
 					if (IsIceThere(i, j)) {
-						cout << "Cant go up" << endl;
 						M_allowed = false;
 						continue;
 					}
@@ -245,15 +257,17 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 				//delete shortfield[currentX, currentY + 1];
 				//shortfield[currentX, currentY + 1] = new int(0);
 				q.push(pair<int, int>(currentX, currentY + 1));
+				visited[currentX][currentY + 1] = true;
 			}
 		}
 
-		if (!IsIceThere(currentX, currentY - 1) && currentX <= 60 && currentY <= 60) {
+		if (!IsIceThere(currentX, currentY - 1) && !OffTheGrid(currentX, currentY - 1) || visited[currentX][currentY] == false) {
+			int checkingY = currentY - 1;
+			int checkingX = currentX;
 			bool M_allowed = true;
 			for (int i = currentX; i < currentX + 4; i++) {
 				for (int j = currentY; j < currentY + 4; j++) {
 					if (IsIceThere(i, j)) {
-						//cout << "Cant go down" << endl;
 						M_allowed = false;
 						continue;
 					}
@@ -261,15 +275,17 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 			}
 			if (M_allowed == true) {
 				q.push(pair<int, int>(currentX, currentY - 1));
+				visited[currentX][currentY - 1] = true;
 			}
 		}
 
-		if (!IsIceThere(currentX + 1, currentY) && currentX <= 60 && currentY <= 60) {
+		if (!IsIceThere(currentX + 1, currentY) && !OffTheGrid(currentX + 1, currentY) || visited[currentX][currentY] == false) {
+			int checkingY = currentY;
+			int checkingX = currentX + 1;
 			bool M_allowed = true;
 			for (int i = currentX; i < currentX + 4; i++) {
 				for (int j = currentY; j < currentY + 4; j++) {
 					if (IsIceThere(i, j)) {
-						cout << "Cant go right" << endl;
 						M_allowed = false;
 						continue;
 					}
@@ -277,25 +293,30 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 			}
 			if (M_allowed == true) {
 				q.push(pair<int, int>(currentX + 1, currentY));
+				visited[currentX + 1][currentY] = true;
 			}
 		}
 
-		if (!IsIceThere(currentX - 1, currentY) && currentX <= 60 && currentY <= 60) {
+		if (!IsIceThere(currentX - 1, currentY) && !OffTheGrid(currentX - 1, currentY) || visited[currentX][currentY] == false) {
+			int checkingY = currentY;
+			int checkingX = currentX - 1;
 			bool M_allowed = true;
 			for (int i = currentX; i < currentX + 4; i++) {
 				for (int j = currentY; j < currentY + 4; j++) {
 					if (IsIceThere(i, j)) {
-						cout << "Cant go left" << endl;
 						M_allowed = false;
 						continue;
 					}
 				}
 			}
+
 			if (M_allowed == true) {
 				q.push(pair<int, int>(currentX - 1, currentY));
+				visited[currentX - 1][currentY] = true;
 			}
 		}
-		*/
+		cout << "Size of q: " << q.size() << endl;
+		
 		//count++;
 	}
 	

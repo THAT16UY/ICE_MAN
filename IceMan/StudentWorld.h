@@ -9,7 +9,7 @@
 #include <vector>
 #include <ctime>
 #include <cmath>
-
+//#define GRID_SIZE = 5
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
 
 class StudentWorld : public GameWorld
@@ -20,9 +20,16 @@ public:
 	{
 		for (int i = 0; i < 64; i++) {
 			for (int j = 0; j < 64; j++) {
+				visited[i][j] = { false };
+			}
+		}
+		
+		for (int i = 0; i < 64; i++) {
+			for (int j = 0; j < 64; j++) {
 				shortfield[i][j] = new int(1000);
 			}
 		}
+		
 	}
 
 	void setUpItem(int num, const int id);
@@ -290,6 +297,7 @@ private:
 	Protester* HProtester{};//temp, used for testing.
 
 	int* shortfield[64][64]; 
+	bool visited[64][64];
 	
 	Ice* iceSheet[65][65]{ nullptr };
 	std::vector<Item*> itemV;//This vector stores items: Boulders,Gold,Oil,Sonar,Pool.
