@@ -2,6 +2,7 @@
 #define ACTOR_H_
 
 #include <queue>
+#include <chrono>
 
 #include "GraphObject.h"
 class StudentWorld; // This is an incomplete type. Also known as a forward declaration.
@@ -75,6 +76,8 @@ public:
 	
 	virtual bool isGrabbable() = 0;
 	virtual void setGrabbable(bool) = 0;
+	virtual void setFall() = 0;
+	virtual void terminate() = 0;
 };
 
 class Ice : public Item {
@@ -85,6 +88,8 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Gold : public Item {
@@ -96,6 +101,8 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Oil : public Item {
@@ -107,16 +114,21 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Boulder : public Item {
-
+	bool it_fell{ false };
+	std::chrono::steady_clock::time_point start;
 public:
 	Boulder(int startX, int startY);
 	virtual ~Boulder();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Sonar : public Item {
@@ -128,16 +140,21 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Gun : public Item { //Water gun.
-
+	std::chrono::steady_clock::time_point start;
+	
 public:
 	Gun(int startX, int startY);
 	virtual ~Gun();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Pool : public Item {
@@ -148,6 +165,8 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 

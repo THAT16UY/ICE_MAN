@@ -9,7 +9,8 @@
 #include <vector>
 #include <ctime>
 #include <cmath>
-//#define GRID_SIZE = 5
+#include <chrono>
+
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
 
 class StudentWorld : public GameWorld
@@ -37,6 +38,8 @@ public:
 	virtual int init()
 	{
 		//For-loop sets up the ice sheet.
+		
+
 		for (int xAxis{ 0 }; xAxis < 64; xAxis++) {
 			if (xAxis == 30 || xAxis == 31 || xAxis == 32 || xAxis == 33) { continue; }
 			for (int yAxis{ 0 }; yAxis < 60; yAxis++) {
@@ -112,6 +115,12 @@ public:
 		itemInteraction(x, y, itemV); //Checking for any objects with in a 5.5(to make visible) & 4(to pick up) radius of the iceman.
 		actorInteraction(x,y, actorV);
 
+		if (!gunSquirts.empty()) {
+			for (auto g : gunSquirts) {
+				g->terminate();
+			}
+		}
+
 		if (*oil_found == *oil_barrels_number) {
 			return GWSTATUS_FINISHED_LEVEL;
 		}
@@ -132,7 +141,9 @@ public:
 
 				if (isBoulder) {break;}
 
-				if (x > 0) {iceMan->moveTo(x - 1, y);}
+				if (x > 0) {
+					iceMan->moveTo(x - 1, y);
+				}
 
 				iceMan->setDirection(GraphObject::left);
 				for(int i = x; i<x+4; i++){
@@ -152,7 +163,9 @@ public:
 
 				if (isBoulder) {break;}
 
-				if (x < 60) {iceMan->moveTo(x + 1, y);}
+				if (x < 60) {
+					iceMan->moveTo(x + 1, y);
+				}
 	
 				iceMan->setDirection(GraphObject::right);
 				for (int i = x; i < x + 4; i++) {
@@ -172,7 +185,9 @@ public:
 
 				if (isBoulder) {break;}
 
-				if (y > 0) {iceMan->moveTo(x, y - 1);}
+				if (y > 0) {
+					iceMan->moveTo(x, y - 1);
+				}
 	
 				iceMan->setDirection(GraphObject::down);
 				for (int i = x; i < x + 4; i++) {
@@ -192,7 +207,9 @@ public:
 
 				if (isBoulder) {break;}
 
-				if (y < 60) {iceMan->moveTo(x, y + 1);}
+				if (y < 60) {
+					iceMan->moveTo(x, y + 1);
+				}
 		
 				iceMan->setDirection(GraphObject::up);
 				for(int i = x; i< x + 4; i++){
@@ -203,7 +220,37 @@ public:
 				break;
 
 			case KEY_PRESS_SPACE:
-				//TODO: Find solution to making the splash invisible after it has moved, and add coalition detection with protester.
+				if (iceMan->getWater() <= 0) { break; }
+				playSound(SOUND_PLAYER_SQUIRT);
+				switch (iceMan->getDirection())
+				{
+				case GraphObject::up:
+					gunSquirt = new Gun(iceMan->getX(), iceMan->getY());
+					gunSquirt->setDirection(GraphObject::up);
+					gunSquirt->setVisible(true);
+					gunSquirt->moveTo(x, y + 12);
+					break;
+				case GraphObject::down:
+					gunSquirt = new Gun(iceMan->getX(), iceMan->getY());
+					gunSquirt->setDirection(GraphObject::down);
+					gunSquirt->setVisible(true);
+					gunSquirt->moveTo(x, y - 12);
+					break;
+				case GraphObject::left:
+					gunSquirt = new Gun(iceMan->getX(), iceMan->getY());
+					gunSquirt->setDirection(GraphObject::left);
+					gunSquirt->setVisible(true);
+					gunSquirt->moveTo(x - 12, y);
+					break;
+				case GraphObject::right:
+					gunSquirt = new Gun(iceMan->getX(), iceMan->getY());
+					gunSquirt->setDirection(GraphObject::right);
+					gunSquirt->setVisible(true);
+					gunSquirt->moveTo(x + 12, y);
+					break;
+				}
+				gunSquirts.push_back(gunSquirt);//pointer saved to be deleted later.
+				iceMan->decreaseWater();
 				break;
 
 			case KEY_PRESS_ESCAPE:
@@ -234,6 +281,37 @@ public:
 				break;
 			}
 			
+		}
+
+		
+		for (int i{ 0 }; i < itemV.size(); i++) { //This will check the boulders.
+			if (itemV.at(i)->getID() != IID_BOULDER) { continue; }
+			
+			itemV.at(i)->terminate();
+
+			bool isIce{ false };
+			for (int j{ itemV.at(i)->getX() }; j < itemV.at(i)->getX() + 3; j++) {
+				if (IsIceThere(j, itemV.at(i)->getY() - 1)) {
+					std::cout << IsIceThere(j, itemV.at(i)->getY() - 1) << std::endl;
+					isIce = true;
+				}
+			}
+			if (!isIce) { 
+				int a{itemV.at(i)->getY()}; // a represents the y-coordinate
+				
+				for (int b{ itemV.at(i)->getX() }; b < itemV.at(i)->getX() + 3; b++) {
+					for (; a > 0; a--) {
+						if (IsIceThere(b,a)) {
+							itemV.at(i)->moveTo(itemV.at(i)->getX(), a);
+							itemV.at(i)->setFall();
+							playSound(SOUND_FALLING_ROCK);
+							break;
+						}
+					}
+				}
+				
+				
+			}
 		}
 		
 		int px = protester->getX();
@@ -270,6 +348,13 @@ public:
 			ite = nullptr;
 		}
 
+		for (Item* item : gunSquirts) {
+			delete item;
+			item = nullptr;
+		}
+
+		gunSquirts.clear();
+
 		itemV.clear();
 		xCoordinatesBoulder.clear();
 		yCoordinatesBoulder.clear();
@@ -304,6 +389,9 @@ private:
 	std::vector<int> xCoordinatesBoulder{};
 	std::vector<int> yCoordinatesBoulder{};
 	std::vector<Actor*> actorV;
+
+	std::vector<Gun*> gunSquirts{};
+	Gun* gunSquirt{};
 };
 
 #endif // STUDENTWORLD_H_
