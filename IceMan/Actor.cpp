@@ -176,7 +176,7 @@ void Gun::terminate() {
 	if (!this->isVisible()) { return; }
 
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-	std::chrono::duration<double> elapsed_seconds = end - start;
+	std::chrono::duration<double> elapsed_seconds = end - start; //This is a timer from the creation of the object to 1/2, when it will become invisible.
 
 	if (elapsed_seconds.count() > .5) {
 		this->setVisible(false);
