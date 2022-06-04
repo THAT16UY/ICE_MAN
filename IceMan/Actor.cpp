@@ -97,6 +97,12 @@ bool Ice::isGrabbable() {
 void Ice::setGrabbable(bool val) {
 	return; //nothing needed here
 }
+void Ice::setFall() {
+	return;
+}
+void Ice::terminate() {
+	return;
+}
 
 Ice::~Ice() {}
 //-----------------------------------------------------------------------------------------------------------------------ICE END
@@ -111,6 +117,14 @@ bool Gold::isGrabbable() {
 
 void Gold::setGrabbable(bool val) {
 	is_available = val;
+}
+
+void Gold::setFall() {
+	return;
+}
+
+void Gold::terminate() {
+
 }
 
 Gold::~Gold() {}
@@ -128,6 +142,14 @@ void Oil::setGrabbable(bool val) {
 	is_available = val;
 }
 
+void Oil::setFall() {
+	return;
+}
+
+void Oil::terminate() {
+	return;
+}
+
 Oil::~Oil() {}
 //-----------------------------------------------------------------------------------------------------------------------OIL END
 
@@ -143,6 +165,22 @@ void Boulder::setGrabbable(bool val) {
 	return;
 }
 
+void Boulder::setFall() {
+	if (it_fell) { return; }
+	it_fell = true;
+	start = std::chrono::steady_clock::now();
+}
+
+void Boulder::terminate(){
+	if (!it_fell) { return; }
+	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end - start; //This is a timer from the creation of the object to 1/2, when it will become invisible.
+
+	if (elapsed_seconds.count() > 1) {
+		this->setVisible(false);
+	}
+}
+
 Boulder::~Boulder() {}
 //-----------------------------------------------------------------------------------------------------------------------BOULDER END
 
@@ -152,8 +190,17 @@ Sonar::Sonar(int startX, int startY) : Item(IID_SONAR, startX, startY, none, 1.0
 bool Sonar::isGrabbable() {
 	return is_available;
 }
+
 void Sonar::setGrabbable(bool val) {
 	is_available = val;
+}
+
+void Sonar::setFall() {
+	return;
+}
+
+void Sonar::terminate() {
+	return;
 }
 
 Sonar::~Sonar() {}
@@ -171,6 +218,11 @@ bool Gun::isGrabbable() {
 void Gun::setGrabbable(bool val) {
 	return;
 }
+
+void Gun::setFall() {
+	return;
+}
+
 void Gun::terminate() {
 
 	if (!this->isVisible()) { return; }
@@ -196,6 +248,14 @@ bool Pool::isGrabbable() {
 
 void Pool::setGrabbable(bool val) {
 	is_available = val;
+}
+
+void Pool::setFall() {
+	return;
+}
+
+void Pool::terminate() {
+	return;
 }
 
 Pool::~Pool() {}

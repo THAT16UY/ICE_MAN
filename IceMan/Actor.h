@@ -76,6 +76,8 @@ public:
 	
 	virtual bool isGrabbable() = 0;
 	virtual void setGrabbable(bool) = 0;
+	virtual void setFall() = 0;
+	virtual void terminate() = 0;
 };
 
 class Ice : public Item {
@@ -86,6 +88,8 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Gold : public Item {
@@ -97,6 +101,8 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Oil : public Item {
@@ -108,16 +114,21 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Boulder : public Item {
 	bool it_fell{ false };
+	std::chrono::steady_clock::time_point start;
 public:
 	Boulder(int startX, int startY);
 	virtual ~Boulder();
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Sonar : public Item {
@@ -129,6 +140,8 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 class Gun : public Item { //Water gun.
@@ -140,6 +153,7 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
 	void terminate();
 };
 
@@ -151,6 +165,8 @@ public:
 
 	bool isGrabbable();
 	void setGrabbable(bool val);
+	void setFall();
+	void terminate();
 };
 
 

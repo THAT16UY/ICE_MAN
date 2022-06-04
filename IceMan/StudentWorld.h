@@ -276,9 +276,11 @@ public:
 		}
 
 		
-		for (int i{ 0 }; i < itemV.size(); i++) {
+		for (int i{ 0 }; i < itemV.size(); i++) { //This will check the boulders.
 			if (itemV.at(i)->getID() != IID_BOULDER) { continue; }
 			
+			itemV.at(i)->terminate();
+
 			bool isIce{ false };
 			for (int j{ itemV.at(i)->getX() }; j < itemV.at(i)->getX() + 3; j++) {
 				if (IsIceThere(j, itemV.at(i)->getY() - 1)) {
@@ -293,6 +295,7 @@ public:
 					for (; a > 0; a--) {
 						if (IsIceThere(b,a)) {
 							itemV.at(i)->moveTo(itemV.at(i)->getX(), a);
+							itemV.at(i)->setFall();
 							playSound(SOUND_FALLING_ROCK);
 							break;
 						}
