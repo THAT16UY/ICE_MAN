@@ -104,6 +104,7 @@ public:
 	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
 	void actorInteraction(int x, int y, std::vector<Actor*> &it);
 	void ShortestPath(int ax, int ay, int x, int y);
+	bool fourbyfourice(int , int , int, int);
 
 	virtual int move()
 	{
@@ -292,7 +293,7 @@ public:
 			bool isIce{ false };
 			for (int j{ itemV.at(i)->getX() }; j < itemV.at(i)->getX() + 3; j++) {
 				if (IsIceThere(j, itemV.at(i)->getY() - 1)) {
-					std::cout << IsIceThere(j, itemV.at(i)->getY() - 1) << std::endl;
+					//std::cout << IsIceThere(j, itemV.at(i)->getY() - 1) << std::endl;
 					isIce = true;
 				}
 			}
@@ -316,7 +317,7 @@ public:
 		
 		int px = protester->getX();
 		int py = protester->getY();
-		ShortestPath(px, py, 30, 30);
+		ShortestPath(60, 60, 30, 30);
 		//if (px != 30) { protester->moveTo(30, 60); } // protester movement
 		//if (px == 30) { protester->moveTo(30, 0); }
 

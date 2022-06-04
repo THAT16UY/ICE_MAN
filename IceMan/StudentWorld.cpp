@@ -186,10 +186,11 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 	visited[x][y] = true; 
 	goal.first = x;
 	goal.second = y;
+	bool actorfound = false;
 
 	q.push(goal);
 
-	while (!q.empty()) {
+	while (actorfound == false) {
 
 		int currentX = q.front().first;
 		int currentY = q.front().second;
@@ -197,7 +198,7 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 		int actorY = ay;
 
 		cout << "Size of q: " << q.size() << endl;
-
+		cout << "Testing " << currentX << " " << currentY << endl;
 		q.pop();
 		//cout << "checking X: " << currentX << " and Y: " << currentY << endl;
 		//*(visited[currentX][currentY]) = true;
@@ -205,119 +206,89 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 
 		if (currentX == actorX && currentY == actorY) {
 			cout << "protester found." << endl;
+			actorfound = true;
 		}
-		/*
-		if (IsIceThere(currentX, currentY)  || OffTheGrid(currentX, currentY)){
-			continue;
-		}
-		
-		if (shortfield[x][y] == shortfield[ax][ax]){
-			cout << "Protester found!!" << endl;
-			break;
-		}
-
-		/*
-		if (*(shortfield[currentX][currentY]) != 1000)
-		{
-			continue;
-		}
-		*/
-
-		/*
-		if (squares.empty()) {
-			continue;
-		}
-		*/
-
-		/*
-		delete shortfield[currentX][currentY];
-		shortfield[currentX][currentY] = new int(count + 1);
-		*/
-		/*
-		q.push(pair<int, int>(currentX, currentY - 1));
-		q.push(pair<int, int>(currentX, currentY + 1));
-		q.push(pair<int, int>(currentX - 1, currentY));
-		q.push(pair<int, int>(currentX + 1, currentY));
-		*/
-		
-		if (!IsIceThere(currentX, currentY + 1) && !OffTheGrid(currentX, currentY + 1) || visited[currentX][currentY] == false)
-		{
-			int checkingY = currentY + 1;
-			int checkingX = currentX;
-			bool M_allowed = true;
-			for (int i = currentX; i < currentX + 4; i++) {
-				for (int j = currentY; j < currentY + 4; j++) {
-					if (IsIceThere(i, j)) {
-						M_allowed = false;
-						continue;
-					}
+		else {
+			if (!OffTheGrid(currentX, currentY + 1) && visited[currentX][currentY + 1] == false)
+			{
+				int checkingY = currentY + 1;
+				int checkingX = currentX;
+				bool M_allowed = true;
+				if (!fourbyfourice(checkingX, checkingY, checkingX + 4, checkingY + 4)) { M_allowed = false; }
+				if (M_allowed == true) {
+					//delete shortfield[currentX, currentY + 1];
+					//shortfield[currentX, currentY + 1] = new int(0);
+					q.push(pair<int, int>(currentX, currentY + 1));
+					cout << "up pass " << endl;
+					visited[currentX][currentY + 1] = true;
 				}
-			}
-			if (M_allowed == true) {
-				//delete shortfield[currentX, currentY + 1];
-				//shortfield[currentX, currentY + 1] = new int(0);
-				q.push(pair<int, int>(currentX, currentY + 1));
-				visited[currentX][currentY + 1] = true;
-			}
-		}
-
-		if (!IsIceThere(currentX, currentY - 1) && !OffTheGrid(currentX, currentY - 1) || visited[currentX][currentY] == false) {
-			int checkingY = currentY - 1;
-			int checkingX = currentX;
-			bool M_allowed = true;
-			for (int i = currentX; i < currentX + 4; i++) {
-				for (int j = currentY; j < currentY + 4; j++) {
-					if (IsIceThere(i, j)) {
-						M_allowed = false;
-						continue;
-					}
-				}
-			}
-			if (M_allowed == true) {
-				q.push(pair<int, int>(currentX, currentY - 1));
-				visited[currentX][currentY - 1] = true;
-			}
-		}
-
-		if (!IsIceThere(currentX + 1, currentY) && !OffTheGrid(currentX + 1, currentY) || visited[currentX][currentY] == false) {
-			int checkingY = currentY;
-			int checkingX = currentX + 1;
-			bool M_allowed = true;
-			for (int i = currentX; i < currentX + 4; i++) {
-				for (int j = currentY; j < currentY + 4; j++) {
-					if (IsIceThere(i, j)) {
-						M_allowed = false;
-						continue;
-					}
-				}
-			}
-			if (M_allowed == true) {
-				q.push(pair<int, int>(currentX + 1, currentY));
-				visited[currentX + 1][currentY] = true;
-			}
-		}
-
-		if (!IsIceThere(currentX - 1, currentY) && !OffTheGrid(currentX - 1, currentY) || visited[currentX][currentY] == false) {
-			int checkingY = currentY;
-			int checkingX = currentX - 1;
-			bool M_allowed = true;
-			for (int i = currentX; i < currentX + 4; i++) {
-				for (int j = currentY; j < currentY + 4; j++) {
-					if (IsIceThere(i, j)) {
-						M_allowed = false;
-						continue;
-					}
+				else {
+					cout << "up fail " << endl;
 				}
 			}
 
-			if (M_allowed == true) {
-				q.push(pair<int, int>(currentX - 1, currentY));
-				visited[currentX - 1][currentY] = true;
+			if (!OffTheGrid(currentX, currentY - 1) && visited[currentX][currentY - 1] == false) {
+				int checkingY = currentY - 1;
+				int checkingX = currentX;
+				bool M_allowed = true;
+				if (!fourbyfourice(checkingX, checkingY, checkingX + 4, checkingY + 4)) { M_allowed = false; }
+				if (M_allowed == true) {
+					q.push(pair<int, int>(currentX, currentY - 1));
+					cout << "down pass " << endl;
+					visited[currentX][currentY - 1] = true;
+				}
+				else {
+					cout << "down fail " << endl;
+				}
 			}
+
+			if (!OffTheGrid(currentX + 1, currentY) && visited[currentX + 1][currentY] == false) {
+				int checkingY = currentY;
+				int checkingX = currentX + 1;
+				bool M_allowed = true;
+				if (!fourbyfourice(checkingX, checkingY, checkingX + 4, checkingY + 4)) { M_allowed = false; }
+				if (M_allowed == true) {
+					q.push(pair<int, int>(currentX + 1, currentY));
+					cout << "right pass " << endl;
+					visited[currentX + 1][currentY] = true;
+				}
+				else {
+					cout << "right fail " << endl;
+				}
+			}
+
+			if (!OffTheGrid(currentX - 1, currentY) && visited[currentX - 1][currentY] == false) {
+				int checkingY = currentY;
+				int checkingX = currentX - 1;
+				bool M_allowed = true;
+				if (!fourbyfourice(checkingX, checkingY, checkingX - 4, checkingY + 4)) { M_allowed = false; }
+				if (M_allowed == true) {
+					q.push(pair<int, int>(currentX - 1, currentY));
+					cout << "left pass " << endl;
+					visited[currentX - 1][currentY] = true;
+				}
+				else {
+					cout << "left fail " << endl;
+				}
+
+			}
+
+			cout << "Size of q: " << q.size() << endl;
 		}
-		cout << "Size of q: " << q.size() << endl;
-		
-		//count++;
 	}
 	
+}
+
+bool StudentWorld::fourbyfourice(int x, int y, int extraX, int extraY) {
+	for (x; x < extraX; x++) {
+		for (y; y < extraY; y++){
+			if (OffTheGrid(x,y)) {
+				if (iceSheet[x][y]->isVisible()) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+	}
 }
