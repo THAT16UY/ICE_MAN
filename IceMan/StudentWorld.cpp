@@ -113,7 +113,7 @@ bool StudentWorld::IsIceThere(int x, int y) {
 }
 
 bool StudentWorld::OffTheGrid(int x, int y) {
-	if ((x > 60 || x < 0) || (y > 60 || y < 0)) {
+	if ((x > 64 || x < 0) || (y > 64 || y < 0)) {
 		return true;
 	}
 	return false;
@@ -199,6 +199,7 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 
 		cout << "Size of q: " << q.size() << endl;
 		cout << "Testing " << currentX << " " << currentY << endl;
+		cout << currentX << " , " << currentY << " value: " << *(shortfield[currentX][currentY]) << endl;
 		q.pop();
 		//cout << "checking X: " << currentX << " and Y: " << currentY << endl;
 		//*(visited[currentX][currentY]) = true;
@@ -216,11 +217,12 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 				bool M_allowed = true;
 				if (!fourbyfourice(checkingX, checkingY, checkingX + 4, checkingY + 4)) { M_allowed = false; }
 				if (M_allowed == true) {
-					//delete shortfield[currentX, currentY + 1];
-					//shortfield[currentX, currentY + 1] = new int(0);
 					q.push(pair<int, int>(currentX, currentY + 1));
 					cout << "up pass " << endl;
 					visited[currentX][currentY + 1] = true;
+					delete shortfield[currentX][currentY + 1];
+					shortfield[currentX][currentY + 1] = new int(*(shortfield[currentX][currentY]) + 1);
+					cout << checkingX << " , " << checkingY << " value: " << *(shortfield[currentX][currentY + 1]) << endl;
 				}
 				else {
 					cout << "up fail " << endl;
@@ -236,6 +238,9 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 					q.push(pair<int, int>(currentX, currentY - 1));
 					cout << "down pass " << endl;
 					visited[currentX][currentY - 1] = true;
+					delete shortfield[currentX][currentY - 1];
+					shortfield[currentX][currentY - 1] = new int(*(shortfield[currentX][currentY]) + 1);
+					cout << checkingX << " , " << checkingY << " value: " << *(shortfield[currentX][currentY - 1]) << endl;
 				}
 				else {
 					cout << "down fail " << endl;
@@ -251,6 +256,9 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 					q.push(pair<int, int>(currentX + 1, currentY));
 					cout << "right pass " << endl;
 					visited[currentX + 1][currentY] = true;
+					delete shortfield[currentX + 1][currentY];
+					shortfield[currentX + 1][currentY] = new int(*(shortfield[currentX][currentY]) + 1);
+					cout << checkingX << " , " << checkingY << " value: " << *(shortfield[currentX + 1][currentY]) << endl;
 				}
 				else {
 					cout << "right fail " << endl;
@@ -261,11 +269,14 @@ void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 				int checkingY = currentY;
 				int checkingX = currentX - 1;
 				bool M_allowed = true;
-				if (!fourbyfourice(checkingX, checkingY, checkingX - 4, checkingY + 4)) { M_allowed = false; }
+				if (!fourbyfourice(checkingX, checkingY, checkingX + 4, checkingY + 4)) { M_allowed = false; }
 				if (M_allowed == true) {
 					q.push(pair<int, int>(currentX - 1, currentY));
 					cout << "left pass " << endl;
 					visited[currentX - 1][currentY] = true;
+					delete shortfield[currentX - 1][currentY];
+					shortfield[currentX - 1][currentY] = new int(*(shortfield[currentX][currentY]) + 1);
+					cout << checkingX << " , " << checkingY << " value: " << *(shortfield[currentX - 1][currentY]) << endl;
 				}
 				else {
 					cout << "left fail " << endl;
@@ -291,4 +302,5 @@ bool StudentWorld::fourbyfourice(int x, int y, int extraX, int extraY) {
 		}
 		
 	}
+	
 }
