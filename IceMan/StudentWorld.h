@@ -103,6 +103,8 @@ public:
 	void DestroyIce(int x, int y);
 	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
 	void actorInteraction(int x, int y, std::vector<Actor*> &it);
+	//void ShortestPath(int ax, int ay, int x, int y);
+	//bool fourbyfourice(int , int , int, int);
 	void ShortestPath(int ax, int ay, int x, int y);
 	bool fourbyfourice(int , int , int, int);
 	void MakingPath(int, int, int, int, std::queue<std::pair<int, int>> &Pdirections);
@@ -136,8 +138,9 @@ public:
 			{
 				
 			case KEY_PRESS_LEFT:  // move player to the left ...;
-				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
-					if (std::sqrt(pow((x - 1) - xCoordinatesBoulder.at(i), 2) + pow(y - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
+				for (auto rock: itemV) {
+					if (rock->getID() != IID_BOULDER || !rock->isVisible()) { continue; }
+					if (std::sqrt(pow((x - 1) - rock->getX(), 2) + pow(y - rock->getY(), 2)) < 3) { isBoulder = true;}
 				}
 				for (unsigned int i{ 0 }; i < actorV.size(); i++) {
 					if (std::sqrt(pow((x - 1) - actorV.at(i)->getX(), 2) + pow(y - actorV.at(i)->getY(), 2)) < 3) { isBoulder = true; }
@@ -158,9 +161,11 @@ public:
 				break;
 
 			case KEY_PRESS_RIGHT:  // move player to the right ...;
-				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
-					if (std::sqrt(pow((x + 1) - xCoordinatesBoulder.at(i), 2) + pow(y - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
+				for (auto rock : itemV) {
+					if (rock->getID() != IID_BOULDER || !rock->isVisible()) { continue; }
+					if (std::sqrt(pow((x + 1) - rock->getX(), 2) + pow(y - rock->getY(), 2)) < 3) { isBoulder = true;}
 				}
+				
 				for (unsigned int i{ 0 }; i < actorV.size(); i++) {
 					if (std::sqrt(pow((x + 1) - actorV.at(i)->getX(), 2) + pow(y - actorV.at(i)->getY(), 2)) < 3) { isBoulder = true; }
 				}
@@ -180,8 +185,9 @@ public:
 				break;
 
 			case KEY_PRESS_DOWN:
-				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
-					if (std::sqrt(pow(x - xCoordinatesBoulder.at(i), 2) + pow((y - 1)- yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
+				for (auto rock : itemV) {
+					if (rock->getID() != IID_BOULDER || !rock->isVisible()) { continue; }
+					if (std::sqrt(pow(x - rock->getX(), 2) + pow((y - 1) - rock->getY(), 2)) < 3) { isBoulder = true; }
 				}
 				for (unsigned int i{ 0 }; i < actorV.size(); i++) {
 					if (std::sqrt(pow(x - actorV.at(i)->getX(), 2) + pow((y - 1) - actorV.at(i)->getY(), 2)) < 3) { isBoulder = true; }
@@ -202,8 +208,9 @@ public:
 				break;
 
 			case KEY_PRESS_UP:
-				for (unsigned int i = 0; i < xCoordinatesBoulder.size(); i++) {
-					if (std::sqrt(pow(x - xCoordinatesBoulder.at(i), 2) + pow((y + 1) - yCoordinatesBoulder.at(i), 2)) < 3) { isBoulder = true; }
+				for (auto rock : itemV) {
+					if (rock->getID() != IID_BOULDER || !rock->isVisible()) { continue; }
+					if (std::sqrt(pow(x + rock->getX(), 2) + pow((y + 1) - rock->getY(), 2)) < 3) { isBoulder = true; }
 				}
 				for (unsigned int i{ 0 }; i < actorV.size(); i++) {
 					if (std::sqrt(pow(x - actorV.at(i)->getX(), 2) + pow((y + 1) - actorV.at(i)->getY(), 2)) < 3) { isBoulder = true; }
