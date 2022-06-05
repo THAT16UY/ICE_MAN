@@ -305,8 +305,35 @@ bool StudentWorld::fourbyfourice(int x, int y, int extraX, int extraY) {
 	
 }
 
-char StudentWorld::SmallestDirection(int UP, int DOWN, int LEFT, int RIGHT) {
-
+char StudentWorld::SmallestDirection(int UP, int DOWN, int RIGHT, int LEFT) {
+	char SmallestY;
+	int Yvalue;
+	char SmallestX;
+	int Xvalue;
+	char SmallestDir;
+	if (UP < DOWN) {
+		SmallestY = 'U';
+		Yvalue = UP;
+	}
+	else {
+		SmallestY = 'D';
+		Yvalue = DOWN;
+	}
+	if (LEFT < RIGHT) {
+		SmallestX = 'L';
+		Xvalue = LEFT;
+	}
+	else {
+		SmallestX = 'R';
+		Xvalue = RIGHT;
+	}
+	if (Yvalue > Xvalue) {
+		SmallestDir = SmallestX;
+	}
+	else {
+		SmallestDir = SmallestY;
+	}
+	return SmallestDir;
 }
 
 void StudentWorld::MakingPath(int ax, int ay, int x, int y, std::queue<std::pair<int,int>> &Pdirections) {
@@ -318,16 +345,18 @@ void StudentWorld::MakingPath(int ax, int ay, int x, int y, std::queue<std::pair
 
 	Qgrab.push(Qdirect);
 
-	int Up;
-	int Down;
-	int Left;
-	int Right;
+	int Up = 0;
+	int Down = 0;
+	int Left = 0;
+	int Right = 0;
 
 	bool GoalFound = false;
 
 	while (GoalFound == false) {
-		int currentX = Qdirect.first;
-		int currentY = Qdirect.second;
+		int currentX = Qgrab.front().first;
+		int currentY = Qgrab.front().second;
+
+		Qgrab.pop();
 
 		if ((currentX == x) && (currentY == y)) {
 			cout << " goal found " << endl;
@@ -351,7 +380,20 @@ void StudentWorld::MakingPath(int ax, int ay, int x, int y, std::queue<std::pair
 				Left = *(shortfield[currentX - 1][currentY]);
 			}
 
-			SmallestDirection(Up, Down, Right, Left);
+			switch (SmallestDirection(Up, Down, Right, Left)) {
+			case 'U':
+				Pdirections.push(pair<int, int>(currentX, currentY + 1));
+				Qgrab.push(pair<int, int>(currentX, currentY + 1));
+			case 'D':
+				Pdirections.push(pair<int, int>(currentX, currentY - 1));
+				Qgrab.push(pair<int, int>(currentX, currentY - 1));
+			case 'L':
+				Pdirections.push(pair<int, int>(currentX + 1, currentY));
+				Qgrab.push(pair<int, int>(currentX + 1, currentY));
+			case 'R':
+				Pdirections.push(pair<int, int>(currentX - 1, currentY));
+				Qgrab.push(pair<int, int>(currentX - 1, currentY));
+			}
 		}
 
 
