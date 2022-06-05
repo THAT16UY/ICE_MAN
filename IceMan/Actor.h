@@ -54,8 +54,6 @@ public:
 
 	 void doSomething();
 
-	 void PMovement(int ax, int ay, int x, int y);
-
 	~Protester();
 };
 

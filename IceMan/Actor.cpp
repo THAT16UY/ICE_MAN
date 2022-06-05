@@ -64,11 +64,6 @@ void Protester::doSomething() {
 
 }
 
-void Protester::PMovement(int ax, int ay, int x, int y) {
-	srand(time(NULL));
-
-}
-
 Protester::~Protester() {}
 
 //----------------------------------------------------------------------------------------------------------------------PROTESTER END
