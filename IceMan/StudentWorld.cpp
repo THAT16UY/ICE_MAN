@@ -304,3 +304,71 @@ bool StudentWorld::fourbyfourice(int x, int y, int extraX, int extraY) {
 	}
 	
 }
+
+char StudentWorld::SmallestDirection(int UP, int DOWN, int LEFT, int RIGHT) {
+
+}
+
+void StudentWorld::MakingPath(int ax, int ay, int x, int y, std::queue<std::pair<int,int>> &Pdirections) {
+	queue<pair<int, int>> Qgrab;
+	pair<int, int> Qdirect;
+
+	Qdirect.first = ax;
+	Qdirect.second = ay;
+
+	Qgrab.push(Qdirect);
+
+	int Up;
+	int Down;
+	int Left;
+	int Right;
+
+	bool GoalFound = false;
+
+	while (GoalFound == false) {
+		int currentX = Qdirect.first;
+		int currentY = Qdirect.second;
+
+		if ((currentX == x) && (currentY == y)) {
+			cout << " goal found " << endl;
+			GoalFound = true;
+		}
+		else {
+			if (!OffTheGrid(currentX, currentY + 1) && IsIceThere(currentX, currentY + 1))
+			{
+				Up = *(shortfield[currentX][currentY + 1]);
+			}
+			if (!OffTheGrid(currentX, currentY - 1) && IsIceThere(currentX, currentY - 1))
+			{
+				Down = *(shortfield[currentX][currentY - 1]);
+			}
+			if (!OffTheGrid(currentX + 1, currentY) && IsIceThere(currentX + 1, currentY))
+			{
+				Right = *(shortfield[currentX + 1][currentY]);
+			}
+			if (!OffTheGrid(currentX - 1, currentY) && IsIceThere(currentX - 1, currentY))
+			{
+				Left = *(shortfield[currentX - 1][currentY]);
+			}
+
+			SmallestDirection(Up, Down, Right, Left);
+		}
+
+
+
+	}
+}
+
+void StudentWorld::ProtestorMove(int ax, int ay) {
+	srand(time(NULL));
+
+	int coordinateX = rand() % 60;
+	int coordinateY = rand() % 60;
+
+	if (!IsIceThere(coordinateX, coordinateY) && std::sqrt(pow(ax - coordinateX, 2) + pow(ay - coordinateY, 2)) < 30) {
+		ShortestPath(ax, ay, coordinateX, coordinateY);
+		queue<pair<int, int>> direct;
+		pair<int, int> ProtesterStart;
+		MakingPath(ax, ay, coordinateX, coordinateY, direct);
+	}
+}

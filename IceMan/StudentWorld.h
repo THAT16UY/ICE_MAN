@@ -105,6 +105,9 @@ public:
 	void actorInteraction(int x, int y, std::vector<Actor*> &it);
 	void ShortestPath(int ax, int ay, int x, int y);
 	bool fourbyfourice(int , int , int, int);
+	void MakingPath(int, int, int, int, std::queue<std::pair<int, int>> &Pdirections);
+	char SmallestDirection(int, int, int, int);
+	void ProtestorMove(int, int);
 
 	virtual int move()
 	{
@@ -317,7 +320,7 @@ public:
 		
 		int px = protester->getX();
 		int py = protester->getY();
-		ShortestPath(60, 60, 30, 30);
+		//ShortestPath(60, 60, 30, 30);
 		//if (px != 30) { protester->moveTo(30, 60); } // protester movement
 		//if (px == 30) { protester->moveTo(30, 0); }
 
