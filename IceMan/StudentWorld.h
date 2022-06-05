@@ -21,9 +21,16 @@ public:
 	{
 		for (int i = 0; i < 64; i++) {
 			for (int j = 0; j < 64; j++) {
+				visited[i][j] = { false };
+			}
+		}
+		
+		for (int i = 0; i < 64; i++) {
+			for (int j = 0; j < 64; j++) {
 				shortfield[i][j] = new int(1000);
 			}
 		}
+		
 	}
 
 	void setUpItem(int num, const int id);
@@ -92,10 +99,12 @@ public:
 
 	int ItemPlacement(int i);
 	bool IsIceThere(int x, int y);
+	bool OffTheGrid(int x, int y);
 	void DestroyIce(int x, int y);
 	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
 	void actorInteraction(int x, int y, std::vector<Actor*> &it);
 	void ShortestPath(int ax, int ay, int x, int y);
+	bool fourbyfourice(int , int , int, int);
 
 	virtual int move()
 	{
@@ -284,7 +293,7 @@ public:
 			bool isIce{ false };
 			for (int j{ itemV.at(i)->getX() }; j < itemV.at(i)->getX() + 3; j++) {
 				if (IsIceThere(j, itemV.at(i)->getY() - 1)) {
-					std::cout << IsIceThere(j, itemV.at(i)->getY() - 1) << std::endl;
+					//std::cout << IsIceThere(j, itemV.at(i)->getY() - 1) << std::endl;
 					isIce = true;
 				}
 			}
@@ -308,6 +317,7 @@ public:
 		
 		int px = protester->getX();
 		int py = protester->getY();
+		ShortestPath(60, 60, 30, 30);
 		//if (px != 30) { protester->moveTo(30, 60); } // protester movement
 		//if (px == 30) { protester->moveTo(30, 0); }
 
@@ -371,9 +381,9 @@ private:
 	Iceman* iceMan{};
 	Actor* protester{};//temp, used for testing.
 	Protester* HProtester{};//temp, used for testing.
-	
 
-	int* shortfield[64][64]; // new
+	int* shortfield[64][64]; 
+	bool visited[64][64];
 	
 	Ice* iceSheet[65][65]{ nullptr };
 	std::vector<Item*> itemV;//This vector stores items: Boulders,Gold,Oil,Sonar,Pool.
