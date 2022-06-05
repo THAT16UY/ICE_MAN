@@ -296,7 +296,7 @@ public:
 						if (IsIceThere(b,a)) {
 							itemV.at(i)->moveTo(itemV.at(i)->getX(), a);
 							itemV.at(i)->setFall();
-							playSound(SOUND_FALLING_ROCK);
+							if (itemV.at(i)->isVisible()) { playSound(SOUND_FALLING_ROCK); }
 							break;
 						}
 					}
