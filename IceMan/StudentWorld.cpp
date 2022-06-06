@@ -162,7 +162,7 @@ void StudentWorld::itemInteraction(int x, int y, std::vector<Item*> &it) {
 	}
 }
 
-void StudentWorld::actorInteraction(int x, int y, std::vector<Actor*>& it) {
+void StudentWorld::actorInteraction(int x, int y, std::vector<Protester*>& it) {
 
 	for (unsigned int i{ 0 }; i < it.size(); i++) {
 		int itemX = it.at(i)->getX();
@@ -401,16 +401,47 @@ void StudentWorld::MakingPath(int ax, int ay, int x, int y, std::queue<std::pair
 	}
 }
 
-void StudentWorld::ProtestorMove(int ax, int ay) {
+void StudentWorld::ProtestorMove(std::vector<Actor*>& Protest) {
 	srand(time(NULL));
 
-	int coordinateX = rand() % 60;
-	int coordinateY = rand() % 60;
+	for (unsigned int i = 0; i < Protest.size(); i++) {
+		int coordinateX = rand() % 60;
+		int coordinateY = rand() % 60;
+		int AX = Protest.at(i)->getX();
+		int AY = Protest.at(i)->getY();
+		if (!IsIceThere(coordinateX, coordinateY) && std::sqrt(pow(AX - coordinateX, 2) + pow(AY - coordinateY, 2)) < 30) {
+			ShortestPath(AX, AY, coordinateX, coordinateY);
+			queue<pair<int, int>> direct;
+			pair<int, int> ProtesterStart;
+			MakingPath(AX, AY, coordinateX, coordinateY, direct);
+			while (!direct.empty()) {
+				int PX = direct.front().first;
+				int PY = direct.front().second;
 
-	if (!IsIceThere(coordinateX, coordinateY) && std::sqrt(pow(ax - coordinateX, 2) + pow(ay - coordinateY, 2)) < 30) {
-		ShortestPath(ax, ay, coordinateX, coordinateY);
-		queue<pair<int, int>> direct;
-		pair<int, int> ProtesterStart;
-		MakingPath(ax, ay, coordinateX, coordinateY, direct);
+				Protest.at(i)->moveTo(PX, PY);
+			}
+		}
 	}
 }
+
+bool StudentWorld::InsightY(int x, int y) {	
+	for (int check = y; y > 0; y--) {
+		if (IsIceThere(x, y)) {
+			return false;
+		}
+		if (iceMan->getY() == y) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/*
+bool StudentWorld::InsightX(int x, int y) {
+	for(int check = x;)
+}
+*/
+
+
+	
+	

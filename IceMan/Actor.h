@@ -47,14 +47,15 @@ public:
 };
 
 class Protester : public Actor {
-
-	//Ethan
+private:
+	int num_of_steps{ 8 };
 public:
 	 Protester(int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
 
-	 void doSomething(
-
-	 );
+	 int getstep();
+	 void randomstep();
+	 void decreasestep();
+	 void doSomething();
 
 	~Protester();
 };

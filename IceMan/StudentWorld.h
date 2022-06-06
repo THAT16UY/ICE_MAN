@@ -54,6 +54,7 @@ public:
 		boulder_number = new int(std::min(int(current_level / 2 + 3), 10));
 		gold_nugget_number = new int(std::max(5 - current_level / 2, 2));
 		oil_barrels_number = new int(std::min(2 + current_level, 21));
+		int ticksToWaitBetweenMoves = std::max(0, 3 - current_level / 4);
 	
 		setUpItem(*boulder_number, IID_BOULDER); //Bouders are visible TODO: make ice surounding boulder invisible.
 		setUpItem(*oil_barrels_number, IID_BARREL); //Oil is not visible
@@ -70,19 +71,15 @@ public:
 
 		iceMan = new Iceman();
 		iceMan->setVisible(true);
-
-		protester = new Protester(IID_PROTESTER, 60, 60, GraphObject::left, 1.0, 0);
-		protester->setVisible(true);
-
-		HProtester = new HardcoreProtester();
-		HProtester->setVisible(true);
-
 		
-		actorV.push_back(new Protester(IID_PROTESTER, 30, 30, GraphObject::left, 1.0, 0));
+		ProV.push_back(new Protester(IID_PROTESTER, 60, 60, GraphObject::left, 1.0, 0));
+		
+		/*
 		actorV.push_back(new Protester(IID_PROTESTER, 30, 20, GraphObject::left, 1.0, 0));
 		actorV.push_back(new Protester(IID_PROTESTER, 30, 10, GraphObject::left, 1.0, 0));
 
-		std::for_each(actorV.begin(), actorV.end(), [](Actor* &act) {act->setVisible(true); });
+		*/
+		std::for_each(ProV.begin(), ProV.end(), [](Protester* &act) {act->setVisible(true); });
 
 
 		setGameStatText("Lvl: " + std::to_string(getLevel()) +
@@ -102,14 +99,16 @@ public:
 	bool OffTheGrid(int x, int y);
 	void DestroyIce(int x, int y);
 	void itemInteraction(int x, int y, std::vector<Item*> &it); //This method handles the collitions with items. TODO - add counts to appropriate fields with in iceman.
-	void actorInteraction(int x, int y, std::vector<Actor*> &it);
+	void actorInteraction(int x, int y, std::vector<Protester*> &it);
 	//void ShortestPath(int ax, int ay, int x, int y);
 	//bool fourbyfourice(int , int , int, int);
 	void ShortestPath(int ax, int ay, int x, int y);
 	bool fourbyfourice(int , int , int, int);
 	void MakingPath(int, int, int, int, std::queue<std::pair<int, int>> &Pdirections);
 	char SmallestDirection(int, int, int, int);
-	void ProtestorMove(int, int);
+	void ProtestorMove(std::vector<Actor*> &Protest);
+	bool InsightY(int, int);
+	//bool InsightX(int, int);
 
 	virtual int move()
 	{
@@ -119,7 +118,7 @@ public:
 		int y = iceMan->getY();
 		
 		itemInteraction(x, y, itemV); //Checking for any objects with in a 5.5(to make visible) & 4(to pick up) radius of the iceman.
-		actorInteraction(x,y, actorV);
+		actorInteraction(x,y, ProV);
 
 		if (!gunSquirts.empty()) {
 			for (auto g : gunSquirts) {
@@ -294,6 +293,52 @@ public:
 			
 		}
 
+		for (unsigned int i = 0; i < ProV.size(); ++i) {
+			int PX = ProV.at(i)->getX();
+			int PY = ProV.at(i)->getY();
+			ProV.at(i)->randomstep();
+			int step = ProV.at(i)->getstep();
+			if (step != 0) {
+				if (ProV.at(i)->getDirection() == GraphObject::left) {
+					if (PX > 0) {
+						ProV.at(i)->moveTo(PX - 1, PY);					
+					}
+					else {
+						ProV.at(i)->setDirection(GraphObject::right);
+					}
+				}
+				if (ProV.at(i)->getDirection() == GraphObject::right) {
+					if (PX < 60) {
+						ProV.at(i)->moveTo(PX + 1, PY);
+					}
+					else{
+						ProV.at(i)->setDirection(GraphObject::left);
+					}
+				}
+				ProV.at(i)->decreasestep();
+			}
+			else {
+				ProV.at(i)->moveTo(30, 60);
+			}
+		}
+			/*
+			if (iceMan->getX() == actorV.at(i)->getX()) {
+				int y = actorV.at(i)->getY();
+				int x = actorV.at(i)->getX();
+				if (InsightY(x,y)) {			
+					actorV.at(i)->setDirection(GraphObject::down);
+				}
+			}
+			if (iceMan->getY() == actorV.at(i)->getY()) {
+				int y = actorV.at(i)->getY();
+				int x = actorV.at(i)->getX();
+				if (InsightX(x, y)) {
+					actorV.at(i)->setDirection(GraphObject::right);
+				}
+			}	
+			*/
+		
+		
 		
 		for (int i{ 0 }; i < itemV.size(); i++) { //This will check the boulders.
 			if (itemV.at(i)->getID() != IID_BOULDER) { continue; }
@@ -324,12 +369,6 @@ public:
 				
 			}
 		}
-		
-		int px = protester->getX();
-		int py = protester->getY();
-		//ShortestPath(60, 60, 30, 30);
-		//if (px != 30) { protester->moveTo(30, 60); } // protester movement
-		//if (px == 30) { protester->moveTo(30, 0); }
 
 		setGameStatText("Lvl: " + std::to_string(getLevel()) +
 			" Lives: " + std::to_string(getLives()) +
@@ -400,6 +439,7 @@ private:
 	std::vector<int> xCoordinatesBoulder{};
 	std::vector<int> yCoordinatesBoulder{};
 	std::vector<Actor*> actorV;
+	std::vector<Protester*> ProV;
 
 	std::vector<Gun*> gunSquirts{};
 	Gun* gunSquirt{};
