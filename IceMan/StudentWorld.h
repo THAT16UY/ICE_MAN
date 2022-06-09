@@ -105,11 +105,11 @@ public:
 	void actorInteraction(int x, int y, std::vector<Actor*> &it);
 	//void ShortestPath(int ax, int ay, int x, int y);
 	//bool fourbyfourice(int , int , int, int);
-	void ShortestPath(int ax, int ay, int x, int y);
-	bool fourbyfourice(int , int , int, int);
-	void MakingPath(int, int, int, int, std::queue<std::pair<int, int>> &Pdirections);
-	char SmallestDirection(int, int, int, int);
-	void ProtestorMove(int, int);
+	//void ShortestPath(int ax, int ay, int x, int y);
+	//bool fourbyfourice(int , int , int, int);
+	//void MakingPath(int, int, int, int, std::queue<std::pair<int, int>> &Pdirections);
+	//char SmallestDirection(int, int, int, int);
+	//void ProtestorMove(int, int);
 
 	virtual int move()
 	{
@@ -367,8 +367,8 @@ public:
 		gunSquirts.clear();
 
 		itemV.clear();
-		xCoordinatesBoulder.clear();
-		yCoordinatesBoulder.clear();
+		
+		
 
 		for (int i = 0; i < 64; i++) {//Deleting iceSheet.
 			if (i == 31 || i == 32 || i == 33) { continue; }
@@ -397,8 +397,6 @@ private:
 	
 	Ice* iceSheet[65][65]{ nullptr };
 	std::vector<Item*> itemV;//This vector stores items: Boulders,Gold,Oil,Sonar,Pool.
-	std::vector<int> xCoordinatesBoulder{};
-	std::vector<int> yCoordinatesBoulder{};
 	std::vector<Actor*> actorV;
 
 	std::vector<Gun*> gunSquirts{};

@@ -32,8 +32,6 @@ void StudentWorld::setUpItem(int num, const int id) {
 			Item* temp{};
 			if (id == IID_BOULDER) {
 				temp = new Boulder(coordinateX, coordinateY);
-				xCoordinatesBoulder.push_back(coordinateX);
-				yCoordinatesBoulder.push_back(coordinateY);
 				for (int i{ coordinateX }; i < coordinateX + 4; i++) {
 					for (int j{ coordinateY }; j < coordinateY + 4; j++) {
 						if (iceSheet[i][j] != nullptr && iceSheet[i][j]->isVisible()) {
@@ -70,8 +68,6 @@ void StudentWorld::setUpItem(int num, const int id) {
 			Item* temp{};
 			if (id == IID_BOULDER) {
 				temp = new Boulder(coordinateX, coordinateY);
-				xCoordinatesBoulder.push_back(coordinateX);
-				yCoordinatesBoulder.push_back(coordinateY);
 				for (int i{ coordinateX }; i < coordinateX + 4; i++) {
 					for (int j{ coordinateY }; j < coordinateY + 4; j++) {
 						if (iceSheet[i][j] != nullptr && iceSheet[i][j]->isVisible()) {
@@ -177,7 +173,7 @@ void StudentWorld::actorInteraction(int x, int y, std::vector<Actor*>& it) {
 
 	}
 }
-
+/*
 void StudentWorld::ShortestPath(int ax, int ay, int x, int y) {
 	queue<pair<int, int>> q;
 	pair<int, int> goal;
@@ -372,3 +368,4 @@ void StudentWorld::ProtestorMove(int ax, int ay) {
 		MakingPath(ax, ay, coordinateX, coordinateY, direct);
 	}
 }
+*/
