@@ -60,6 +60,20 @@ Iceman::~Iceman() { }
 Protester::Protester(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :
 	Actor(imageID, startX, startY, nullptr, dir, size, depth) { }
 
+int Protester::getstep() {
+	return num_of_steps;
+}
+
+void Protester::randomstep() {
+	srand(time(NULL));
+
+	num_of_steps = rand() % 60 + 8;
+}
+
+void Protester::decreasestep() {
+	num_of_steps--;
+}
+
 void Protester::doSomething() {
 
 }
